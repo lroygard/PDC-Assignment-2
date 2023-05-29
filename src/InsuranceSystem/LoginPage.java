@@ -1,17 +1,16 @@
 package InsuranceSystem;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame {
-    private JPanel panel;
-    private JLabel usernameLabel;
-    private JLabel passwordLabel;
+    private final JPanel panel;
+    private final JLabel usernameLabel;
+    private final JLabel passwordLabel;
     private JTextField usernameTextField;
     private JPasswordField passwordField;
-    private JButton loginButton;
+    private final JButton loginButton;
 
     public LoginPage() {
         panel = new JPanel(null);

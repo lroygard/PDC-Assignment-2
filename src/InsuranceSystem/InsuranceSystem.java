@@ -7,7 +7,8 @@ public class InsuranceSystem {
     }
     
     public void start() {
-        login();
+        //login();
+        showSystem();
     }
     
     public void login() {
@@ -15,4 +16,8 @@ public class InsuranceSystem {
         login.setVisible(true);
     }
     
+    public void showSystem() {
+        SystemPage system = new SystemPage();
+        system.setVisible(true);
+    }
 }
