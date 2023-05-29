@@ -35,5 +35,17 @@ public abstract class Person {
         return birthYear;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public void setBirthYear(int birthYear) {
+        this.birthYear = birthYear;
+    }
+
     public abstract int createId();
 }
