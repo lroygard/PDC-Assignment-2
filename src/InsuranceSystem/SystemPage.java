@@ -129,7 +129,6 @@ public class SystemPage extends JFrame {
         panel.add(polNewAuto);
         panel.add(polNewHome);
         panel.add(polNewLife);
-        
     }
 }
 
