@@ -1,45 +1,76 @@
 package InsuranceSystem;
 
+import java.awt.Color;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LoginPage extends JFrame {
     private final JPanel panel;
-    private final JLabel usernameLabel;
-    private final JLabel passwordLabel;
-    private JTextField usernameTextField;
-    private JPasswordField passwordField;
-    private final JButton loginButton;
+    private ArrayList<Staff> staff; 
 
-    public LoginPage() {
+    public LoginPage(ArrayList<Staff> staffList) {
         panel = new JPanel(null);
-        usernameLabel = new JLabel("Username:");
-        passwordLabel = new JLabel("Password:");
-        usernameTextField = new JTextField();
-        passwordField = new JPasswordField();
-        loginButton = new JButton("Login");
+        JLabel usernameLabel = new JLabel("ID:");
+        JLabel passwordLabel = new JLabel("Password:");
+        JLabel wrongPassword = new JLabel("Incorrect ID or Password. Please Try Again.");
+        JTextField usernameTextField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JButton loginButton = new JButton("Login");
+        staff = staffList;
 
+        wrongPassword.setForeground(Color.red);
+        wrongPassword.setBounds(20, 95, 400, 50);        
+        
+        //Log In Logic
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String username = usernameTextField.getText();
-                String password = new String(passwordField.getPassword());
-                //TODO: sign in logic
+                try {
+                    int ID = Integer.parseInt(usernameTextField.getText());
+                    String password = new String(passwordField.getPassword());
+                    boolean correct = false;
+                    Staff loggedInStaff = null;
+                    
+                    for (Staff thisStaff: staff) {
+                        if(ID == thisStaff.getId()) {
+                            if (thisStaff.getPassword().equals(password)) {
+                                correct = true;
+                                loggedInStaff = thisStaff;
+                                break;
+                            }
+                        } 
+                    }
+                    
+                    if (correct) {
+                        SystemPage system = new SystemPage(loggedInStaff);
+                        system.setVisible(true);
+                    } else {
+                        panel.add(wrongPassword);
+                        panel.repaint();
+                    }
+                } catch (NumberFormatException ex) {
+                    panel.add(wrongPassword);
+                    panel.repaint();
+                }
             }
         });
 
+        //Set Bounds of Labels
         usernameLabel.setBounds(20, 20, 80, 25);
         passwordLabel.setBounds(20, 50, 80, 25);
         usernameTextField.setBounds(100, 20, 160, 25);
         passwordField.setBounds(100, 50, 160, 25);
         loginButton.setBounds(100, 80, 80, 25);
 
+        //Add Labels to panel
         panel.add(usernameLabel);
         panel.add(passwordLabel);
         panel.add(usernameTextField);
         panel.add(passwordField);
         panel.add(loginButton);
 
+        //add panel to frame
         add(panel);
 
         setTitle("Login Page");

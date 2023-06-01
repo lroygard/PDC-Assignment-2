@@ -26,6 +26,28 @@ public class AutoPolicy extends Policy {
         this.accidentHistory = accidentHistory;
         this.commercialUse = commercialUse;
     }
+    
+    public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage, 
+            double yearlyPremium, String frequency, String make, String model, 
+            int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
+        super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
+        this.make = CarBrand.valueOf(make);
+        this.model = stringToCarModel(model, this.make);
+        this.year = year;
+        this.currentLicense = LicenseType.valueOf(currentLicense);
+        this.accidentHistory = accidentHistory;
+        this.commercialUse = commercialUse;
+    }
+    
+    public CarModel stringToCarModel(String modelName, CarBrand make) {
+        ArrayList<CarModel> carModels = CARMODELS.get(make);
+        for (CarModel model : carModels) {
+            if (model.getName().equalsIgnoreCase(modelName)) {
+                return model;
+            }
+        }
+        return null; 
+    }
 
     public CarBrand getMake() {
         return make;

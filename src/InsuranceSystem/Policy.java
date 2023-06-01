@@ -22,6 +22,15 @@ public abstract class Policy {
         this.yearlyPremium = yearlyPremium;
         this.frequency = frequency;
     }
+    
+    public Policy(int policyId, int customerId, double assetTotal, double coverage, double yearlyPremium, String frequency) {
+        this.policyId = policyId;
+        this.customerId = customerId;
+        this.assetTotal = assetTotal;
+        this.coverage = coverage;
+        this.yearlyPremium = yearlyPremium;
+        this.frequency = PaymentFrequency.valueOf(frequency);
+    }
 
     public int getPolicyId() {
         return policyId;

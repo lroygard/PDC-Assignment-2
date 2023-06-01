@@ -27,6 +27,21 @@ public class HomePolicy extends Policy{
         this.constructionQuality = constructionQuality;
     }
 
+    public HomePolicy(int policyId, int customerId, double assetTotal, double coverage,
+            double yearlyPremium, String frequency, String address, int yearBuilt, 
+            int levels, int squareMeters, int noBuildings, String wallMaterial, 
+            String roofMaterial, String constructionQuality) {
+        super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
+        this.address = address;
+        this.yearBuilt = yearBuilt;
+        this.levels = levels;
+        this.squareMeters = squareMeters;
+        this.noBuildings = noBuildings;
+        this.wallMaterial = WallMaterial.valueOf(wallMaterial);
+        this.roofMaterial = RoofMaterial.valueOf(roofMaterial);
+        this.constructionQuality = Quality.valueOf(constructionQuality);
+    }
+    
     public String getAddress() {
         return address;
     }

@@ -20,6 +20,17 @@ public class LifePolicy extends Policy {
         this.gym = gym;
         this.smoker = smoker;
     }
+    
+    public LifePolicy(int policyId, int customerId, double assetTotal, double coverage, 
+            double yearlyPremium, String frequency, ArrayList<MedicalCondition> medicalHistory, 
+            String hobbyRisk, String occupationRisk, boolean gym, boolean smoker) {
+        super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
+        this.medicalHistory = medicalHistory;
+        this.hobbyRisk = Risk.valueOf(hobbyRisk);
+        this.occupationRisk = Risk.valueOf(occupationRisk);
+        this.gym = gym;
+        this.smoker = smoker;
+    }
 
     public ArrayList<MedicalCondition> getMedicalHistory() {
         return medicalHistory;
@@ -63,7 +74,7 @@ public class LifePolicy extends Policy {
     
     
     public static enum Risk {
-        High,
+        High, 
         Medium,
         Low
     }
