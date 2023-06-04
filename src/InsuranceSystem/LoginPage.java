@@ -9,16 +9,16 @@ import java.util.ArrayList;
 public class LoginPage extends JFrame {
     private final JPanel panel;
     private ArrayList<Staff> staff; 
-
-    public LoginPage(ArrayList<Staff> staffList) {
+    
+    public LoginPage() {
         panel = new JPanel(null);
         JLabel usernameLabel = new JLabel("ID:");
         JLabel passwordLabel = new JLabel("Password:");
         JLabel wrongPassword = new JLabel("Incorrect ID or Password. Please Try Again.");
-        JTextField usernameTextField = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
+        JTextField usernameTextField = new JTextField("201111");
+        JPasswordField passwordField = new JPasswordField("BobSmith1!");
         JButton loginButton = new JButton("Login");
-        staff = staffList;
+        staff = Database.getStaffList();
 
         wrongPassword.setForeground(Color.red);
         wrongPassword.setBounds(20, 95, 400, 50);        
@@ -43,8 +43,8 @@ public class LoginPage extends JFrame {
                     }
                     
                     if (correct) {
-                        SystemPage system = new SystemPage(loggedInStaff);
-                        system.setVisible(true);
+                        SystemPage sp = new SystemPage(loggedInStaff);
+                        sp.setVisible(true);
                     } else {
                         panel.add(wrongPassword);
                         panel.repaint();

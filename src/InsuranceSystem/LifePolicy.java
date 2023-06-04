@@ -115,6 +115,6 @@ public class LifePolicy extends Policy {
 
     @Override
     protected int createId() {
-        return -1;
+        return Database.getNextId("LIFEPOLICY");
     }
 }

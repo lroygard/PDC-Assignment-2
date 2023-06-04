@@ -54,7 +54,46 @@ public class Staff extends Person{
     
     @Override
     public int createId() {
-        //TODO - Create ID Logic (Staff)
-        return -1;
+        return Database.getNextId("STAFF");
+    }
+    
+    public int checkExtension(int extension) {
+        if (extension > 99 && extension < 1000) {
+            return extension;
+        } else {
+            return -1;
+        }
+    }
+    
+    protected String checkPassword(String password) {        
+        String specialChars = "!@#$%^&*";
+        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        String number = "123456789";
+
+        if (password.length() > 8 && password.length() < 16) {
+            if (stringContains(password, specialChars)) {
+                if (stringContains(password, upperCase)) {
+                    if (stringContains(password, lowerCase)) {
+                        if (stringContains(password, number)) {
+                            return password;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+
+    }
+    
+    private boolean stringContains(String string, String test) {
+        for (int i = 0; i < string.length(); i++) {
+            for (int j = 0; j < test.length(); j++) {
+                if (string.charAt(i) == test.charAt(j)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

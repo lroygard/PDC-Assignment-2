@@ -147,7 +147,6 @@ public class HomePolicy extends Policy{
 
     @Override
     protected int createId() {
-        //TODO: Home Create ID
-        return -1;
+        return Database.getNextId("HOMEPOLICY");
     }
 }

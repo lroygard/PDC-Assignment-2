@@ -134,9 +134,9 @@ public class AutoPolicy extends Policy {
 
     @Override
     protected int createId() {
-        //TODO: Auto Create ID
-        return -1;
+        return Database.getNextId("AUTOPOLICY");
     }
+
     
     public static HashMap<CarBrand, ArrayList<CarModel>> CreateCarModels() {
         HashMap<CarBrand, ArrayList<CarModel>> newCarModels = new HashMap<>();

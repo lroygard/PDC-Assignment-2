@@ -1,178 +1,88 @@
 package InsuranceSystem;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.*;
 
 public class SystemPage extends JFrame {
+    public static final int CURRENTYEAR = 2023;
+    public final InsuranceSystem insSys = new InsuranceSystem();
     
-    private final InsuranceSystem insSys = new InsuranceSystem();
-    private final JPanel homePage;
-    private JPanel custDetailP;
+    private HomePage homePage = new HomePage();
+    private JPanel currentPanel;
     
-    public SystemPage(Staff currentStaff) {
-        homePage = new JPanel(null);
-        custDetailP = new JPanel(null);        
-        insSys.currentStaff = currentStaff;
+    //Components on background
+    JLabel logo;
+    JButton backButton;
+      
+    public SystemPage(Staff staff) {
+        //setLayout(null);
+
+        insSys.currentStaff = staff;
         insSys.currentCustomer = new Customer(1111,"Bob","Smith",2000,"(021) 215 0603", "bobsmith@gmail.com");
-        
-        labels();
-        customerButtons();
-        staffButtons();
-        policyButtons();
-        staffVisual();
-        add(homePage);
-        
+
+        createLogo();
+        createStaffVisual();
+        createBackButton();
+              
         setTitle("Insurance System Tool");
         setSize(1000, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setResizable(false);   
-    }    
-    
-    public void labels() {
-        //Create Labels
-        JLabel customer = new JLabel("CUSTOMER");
-        JLabel staff = new JLabel("STAFF");
-        JLabel policy = new JLabel("POLICY");
-        JLabel options = new JLabel("OPTIONS");
-        JLabel logo = new JLabel();
-        homePage.setBackground(Color.WHITE);
+        setResizable(false); 
+
+        showPanel(homePage.getPanel());
+    }
         
-        //Get Image and resize
+    public void createLogo() {
+        logo = new JLabel();
+        logo.setBounds(0,-15,250,175);
+        
+        //Get Logo and resive it
         ImageIcon originalIcon = new ImageIcon("./resources/logo.png");
         Image originalImage = originalIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(225, 150, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);
+        
         logo.setIcon(resizedIcon);
         add(logo);
-
-        //Set label bounds
-        options.setBounds(425,100,200,25);
-        customer.setBounds(175,150,200,25);
-        policy.setBounds(450,150,200,25);
-        staff.setBounds(725,150,200,25);
-        logo.setBounds(0,-15,250,175);
-        
-        //set label fonts
-        options.setFont(new Font("Verdana", Font.BOLD, 20));
-        customer.setFont(new Font("Verdana", Font.BOLD, 16));
-        policy.setFont(new Font("Verdana", Font.BOLD, 16));
-        staff.setFont(new Font("Verdana", Font.BOLD, 16));
-        
-        //add labels to the homepage panel
-        homePage.add(options);
-        homePage.add(customer);
-        homePage.add(staff);
-        homePage.add(policy);
-    }
-
-    private JButton createButton(String text, int x, int y, int width, int height) {
-        JButton button = new JButton(text);
-        button.setBounds(x, y, width, height);
-        button.setBackground(new Color(224, 224, 224));
-        return button;
     }
     
-    private JTextField createTextField(String text, int x, int y, int width, int height) {
-        JTextField textField = new JTextField(text);
-        textField.setBounds(x, y, width, height);
-        return textField;
-    }
-    
-    private JLabel createLabel(String text, Font font, int x, int y, int width, int height) {
-        JLabel label = new JLabel(text);
-        label.setFont(font);
-        label.setBounds(x, y, width, height);
-        return label;
-    }
-    
-    public void customerButtons() {
-        int x = 125;
-        int y = 200;
-        int width = 200;
-        int height = 50;
+    public void createBackButton() {
+        backButton = createButton("Show HomePage", Color.WHITE, 390, 30, 200, 50);
+        add(backButton);
         
-        JButton custDetails = createButton("View Customer Details", x, y, width, height);
-        JButton custPolicy = createButton("View Customer Policies", x, y+=75, width, height);
-        JButton custLookUp = createButton("Look up Customer", x, y+=75, width, height);
-        JButton custNew = createButton("Create a New Customer", x, y+75, width, height);
-        
-        custDetails.addActionListener(new ActionListener() {
+        //When back button is pressed, restore home page
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (insSys.currentCustomer != null) {
-                    remove(homePage);
-                    viewCustomer();
-                    validate();
-                    repaint();
-                } else {
-                    // No customer loaded logic
-                }
-        }});
-        
-        
-        homePage.add(custDetails);
-        homePage.add(custPolicy);
-        homePage.add(custLookUp);
-        homePage.add(custNew);
+                showPanel(homePage.getPanel());
+            }
+        });
     }
     
-    public void policyButtons() {
-        int x = 390;
-        int y = 200;
+    private void createStaffVisual() {
+        int x = 700;
+        int y = 35;
         int width = 200;
-        int height = 50;
-
-        JButton polView = createButton("View Customer Policies", x, y, width, height);
-        JButton polNewAuto = createButton("Create a new Auto Policy", x, y+=75, width, height);
-        JButton polNewHome = createButton("Create a new Home Policy", x, y+=75, width, height);
-        JButton polNewLife = createButton("Create a new Life Policy", x, y+75, width, height);
-
-        homePage.add(polView);
-        homePage.add(polNewAuto);
-        homePage.add(polNewHome);
-        homePage.add(polNewLife);
-    }
-    
-    public void staffButtons() {
-        int x = 655;
-        int y = 200;
-        int width = 200;
-        int height = 50;
+        int height = 15;
+        Font font = new Font("Calibri", Font.BOLD, 15);
         
-        JButton staffDetails = createButton("View/Change your details", x, y, width, height);
-        JButton staffLookUp = createButton("Look up Staff Members*", x, y+=75, width, height);
-        JButton staffNew = createButton("Create a new Staff Member*", x, y+=75, width, height);
-        JButton logOut = createButton("Log Out", x, y+75, width, height);
-        
-        homePage.add(staffDetails);
-        homePage.add(staffLookUp);
-        homePage.add(staffNew);
-        homePage.add(logOut);
-    }
-    
-    private void staffVisual() {
-        JLabel user = new JLabel(insSys.currentStaff.getFullName());
-        JLabel userInfo = new JLabel("Logged in as: ");
-        JLabel managerInfo = new JLabel("Manager Permissions: "+Boolean.toString(insSys.currentStaff.isManager()));
+        JLabel userInfo = createLabel("Logged in as: ", font, x, y+=20, width, height);
+        JLabel user = createLabel(insSys.currentStaff.getFullName(), font, x, y+=20, width, height);
+        JLabel managerInfo = createLabel("Manager Permissions: "+Boolean.toString(insSys.currentStaff.isManager()), font, x, y+=20, width, height);
 
-        userInfo.setFont(new Font("Calibri", Font.BOLD, 15));
-        user.setFont(new Font("Calibri", Font.PLAIN, 15));
-        managerInfo.setFont(new Font("Calibri", Font.BOLD, 15));
-
-        userInfo.setBounds(750, 35, 100, 15);
-        user.setBounds(750, 55, 100, 15);
-        managerInfo.setBounds(750, 75, 250, 15);
-        
         add(user);
         add(userInfo);
         add(managerInfo);
     }
-    
+
+    //TODO own class
     private void viewCustomer() {
+        //Create Panel
+        JPanel custDetailP = new JPanel(null);   
         custDetailP.setBackground(Color.WHITE);
+        //Get current customer
         Customer cust = insSys.currentCustomer;
 
         int x = 150;
@@ -180,9 +90,11 @@ public class SystemPage extends JFrame {
         int width = 150;
         int height = 25;
         
+        //String of label names to display
         String[] labelNames = {"ID:", "Name:", "Birth Year:", "Phone Number:", "Email:", "Number of Policies:"};
         Font font = new Font(null, Font.PLAIN, 16);
 
+        //Add each label, add 50 to y and then add the next Label
         for (int i = 0; i < labelNames.length; i++) {
             JLabel label = createLabel(labelNames[i],font,x,y,width,height);
             custDetailP.add(label);
@@ -190,7 +102,8 @@ public class SystemPage extends JFrame {
         }
         
         x = 350;
-        //Customer info
+        
+        //Create Textfields for changable values and labels for viewable
         JLabel id = createLabel(String.valueOf(cust.getId()),font,x,150,width,height);
         JLabel birthYear = createLabel(String.valueOf(cust.getBirthYear()), font,x,250,width,height);
         JTextField firstName = createTextField(cust.getFirstName(),x,200,width,height);
@@ -198,8 +111,10 @@ public class SystemPage extends JFrame {
         JTextField phoneNumber = createTextField(cust.getPhoneNumber(),x,300,width,height);
         JTextField email = createTextField(cust.getEmail(),x,350,width,height);
         
+        //Save button
         JButton save = createButton("Save Details", 350, y-10, 200, 30);
         
+        //Add Attributes to panel
         custDetailP.add(id);
         custDetailP.add(birthYear);
         custDetailP.add(firstName);
@@ -207,14 +122,130 @@ public class SystemPage extends JFrame {
         custDetailP.add(phoneNumber);
         custDetailP.add(email);
         custDetailP.add(save);
+        
+        //Set this panel to the current panel
+        this.currentPanel = custDetailP;
+        add(currentPanel);
+    }
+    
+    //TODO own class
+    public void createAutoPolicy() {
+        JPanel createAutoPolicyP = new JPanel(null);
+        Font font = new Font(null, Font.PLAIN, 16);
+        
+        int x = 150;
+        int y = 250;
+        int width = 150;
+        int height = 25;
+        
+        JLabel createAutoPolicy = createLabel("Auto Policy",new Font(null,Font.BOLD,18),425,150,width,height);
+        createAutoPolicy.add(createAutoPolicy);
+        
+                               //300        350          400          450                500                  550
+        String[] labelNames = {"Car Make:", "Car Model", "Year Made", "Current License", "Accident History:", "Commercial Use"};
+        
+        for (int i = 0; i < labelNames.length; i++) {
+            y += 50;
+            JLabel label = createLabel(labelNames[i], font, x, y, width, height);
+            createAutoPolicyP.add(label);
+        }
+        
+        x += width;
+                
+        JComboBox make = createComboBox(x, y+=50, width, height);
+        for (AutoPolicy.CarBrand carBrand : AutoPolicy.CarBrand.values()) {
+            make.addItem(carBrand.name());
+        }
+        
+        JComboBox model = createComboBox(x,y+=50, width, height);
+        
+        make.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String brand = make.getSelectedItem().toString();
+                if (brand != null && !brand.isEmpty()) {
+                    ArrayList<CarModel> models = AutoPolicy.CARMODELS.get(make);
+                    model.removeAll();
+                    for (CarModel carModel: models) {
+                        model.addItem(carModel.getName());
+                    }
+                }
+            }
+        });
+        
+        JComboBox year = createComboBox(x,y+=50,width,height);
+        for (int i = CURRENTYEAR - 18; i > CURRENTYEAR - 100; i--) {
+            year.addItem(String.valueOf(i));
+        }
+        
+        JComboBox currentLicense = createComboBox(x,y+=50,width,height);
+        for (AutoPolicy.LicenseType licenseType: AutoPolicy.LicenseType.values()) {
+            currentLicense.addItem(licenseType.name());
+        }
+        
+        JComboBox accidentHistory = createComboBox(x,y+=50,width,height);
+        accidentHistory.addItem("True");
+        accidentHistory.addItem("false");
+        
+        
+        JComboBox commercialUse = createComboBox(x,y+=50,width,height);
+        commercialUse.addItem("True");
+        commercialUse.addItem("False");
+    }
 
-        add(custDetailP);
+    public void showPanel(JPanel panel) {
+        if (currentPanel != null) {
+            remove(currentPanel);
+        }
+        this.currentPanel = panel;
+        add(currentPanel);
+        validate();
+        repaint();
+    }
+
+    public static JButton createButton(String text, int x, int y, int width, int height) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+        button.setBackground(new Color(224, 224, 224));
+        return button;
     }
     
-    public static void main(String[] args) {
-        SystemPage sp = new SystemPage(new Staff(1234,"Lily","Roygard",2004,100,"1234@gmail.com","hello",true));
-        sp.setVisible(true);
+     public static JButton createButton(String text, Color colour, int x, int y, int width, int height) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+        button.setBackground(colour);
+        return button;
     }
     
+    public static JTextField createTextField(String text, int x, int y, int width, int height) {
+        JTextField textField = new JTextField(text);
+        textField.setBounds(x, y, width, height);
+        return textField;
+    }
+    
+    public static JComboBox createComboBox(int x, int y, int width, int height) {
+        JComboBox comboBox = new JComboBox();
+        comboBox.setBounds(x, y, width, height);
+        return comboBox;
+    }
+    
+    public static JLabel createLabel(String text, int x, int y, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setBounds(x, y, width, height);
+        return label;
+    }
+    
+    public static JLabel createLabel(String text, Font font, int x, int y, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setFont(font);
+        label.setBounds(x, y, width, height);
+        return label;
+    }
+    
+    public static JLabel createLabel(String text, Font font, Color colour, int x, int y, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setForeground(colour);
+        label.setBounds(x, y, width, height);
+        return label;
+    }
 }
 

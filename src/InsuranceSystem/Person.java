@@ -51,5 +51,17 @@ public abstract class Person {
         this.birthYear = birthYear;
     }
 
+    protected String checkName(String name) {
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-')) {
+                return null;
+            }
+        }
+
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
+    }
+    
+    
     public abstract int createId();
 }

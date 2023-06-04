@@ -5,22 +5,43 @@ import java.util.ArrayList;
 
 public class Database {
     
-    private final DatabaseManager dbManager;
-    private final Connection conn;
-    private Statement statement;
+    private static final DatabaseManager dbManager = new DatabaseManager();;
+    private static final Connection conn = dbManager.getConnection();;
+    private static Statement statement ;
     
-    public Database() {
-        dbManager = new DatabaseManager();
-        conn = dbManager.getConnection();
-        staffDatabase();
-        custDatabase();
-        autoPolicyDatabase();
-        homePolicyDatabase();
-        lifePolicyDatabase();
-        idDatabase();
+    public Database() {        
+        //dropAllTables();
+        
+        createStaffTable();
+        createCustomerTable();
+        createAutoPolicyTable();
+        createHomePolicyTable();
+        createLifePolicyTable();
+        createMedicalHistoryTable();
+        createIdTable();
     }
     
-    public void staffDatabase() {
+    public static void dropAllTables() {
+        try {
+            statement = conn.createStatement();
+            String[] tables = new String[]{"STAFF","CUSTOMER","AUTOPOLICY","HOMEPOLICY","LIFEPOLICY","MEDICALHISTORY","IDTABLE"};
+            
+            for(int i = 0; i < 6; i++) {
+                ResultSet table = conn.getMetaData().getTables(null, null, tables[i], null);
+                boolean tableExists = table.next();
+                table.close();
+                
+                if(tableExists) {
+                    statement.executeUpdate("DROP TABLE " + tables[i]);
+                }
+            }
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }   
+    }
+    
+    public static void createStaffTable() {
         try {
             statement = conn.createStatement();
             String tableName = "STAFF";
@@ -44,7 +65,7 @@ public class Database {
                 statement.executeUpdate(createTableQuery);
                 
                 //Insert one person so that you aren't locked out of the program
-                String insertQuery = "INSERT INTO TABLE STAFF VALUES (201111, 'Bob', 'Smith', 1989, '101111@blacktieinsurance.co.nz', BobSmith1!, true)";
+                String insertQuery = "INSERT INTO STAFF VALUES (201111, 'Bob', 'Smith', 1989, 101, '201111@blacktieinsurance.co.nz', 'BobSmith1!', true)";
                 statement.executeUpdate(insertQuery);
             }
         } catch (SQLException ex) {
@@ -52,7 +73,7 @@ public class Database {
         }
     }
     
-    public void custDatabase() {
+    public static void createCustomerTable() {
         try {
             statement = conn.createStatement();
             String tableName = "CUSTOMER";
@@ -67,8 +88,9 @@ public class Database {
                         "ID INT PRIMARY KEY,"+
                         "FIRSTNAME VARCHAR(50)," +
                         "LASTNAME VARCHAR(50)," +
+                        "BIRTHYEAR INT," +
                         "PHONENUMBER VARCHAR(50)," +
-                        "EMAIL VARCHAR(50)," +
+                        "EMAIL VARCHAR(50)" +
                         ")";
                 
                 statement.executeUpdate(createTableQuery);
@@ -79,7 +101,7 @@ public class Database {
         }
     }
     
-    public void autoPolicyDatabase() {
+    public static void createAutoPolicyTable() {
         try {
             statement = conn.createStatement();
             String tableName = "AUTOPOLICY";
@@ -98,10 +120,10 @@ public class Database {
                         "PREMIUM DOUBLE,"+
                         "MAKE VARCHAR(50),"+
                         "MODEL VARCHAR(50),"+
-                        "YEAR INT,"+
+                        "YEARMADE INT,"+
                         "CURRENTLICENSE VARCHAR(20),"+
                         "ACCIDENTHISTORY BOOLEAN,"+
-                        "COMMERCIALUSE BOOLEAN,"+
+                        "COMMERCIALUSE BOOLEAN"+
                         ")";
                         
                 statement.executeUpdate(createTableQuery);
@@ -111,7 +133,7 @@ public class Database {
         }
     }
     
-    public void lifePolicyDatabase() {
+    public static void createLifePolicyTable() {
         try {
             statement = conn.createStatement();
             String tableName = "LIFEPOLICY";
@@ -129,9 +151,9 @@ public class Database {
                         "PAYMENTFREQUENCY VARCHAR(50),"+
                         "PREMIUM DOUBLE," +
                         "OCCUPATIONRISK VARCHAR(10),"+
-                        "HOBBYRISK VARCHAR(10)"+
-                        "GYM BOOLEAN," +
-                        "SMOKER BOOLEAN," +
+                        "HOBBYRISK VARCHAR(10),"+
+                        "HAS_GYM BOOLEAN," +
+                        "SMOKER BOOLEAN" +
                         ")";
                 
                 statement.executeUpdate(createTableQuery);
@@ -141,7 +163,7 @@ public class Database {
         }
     }
     
-    public void medicalHistoryDatabase() {
+    public static void createMedicalHistoryTable() {
         try {
             statement = conn.createStatement();
             String tableName = "MEDICALHISTORY";
@@ -152,8 +174,8 @@ public class Database {
             
             if(!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
-                        "POLICYID INT" +
-                        "MEDICALCONDITION VARCHAR(50),"+
+                        "POLICYID INT," +
+                        "MEDICALCONDITION VARCHAR(50)"+
                         ")";
                 
                 statement.executeUpdate(createTableQuery);
@@ -163,7 +185,7 @@ public class Database {
         }
     }
     
-    public void homePolicyDatabase() {
+    public static void createHomePolicyTable() {
         try {
             statement = conn.createStatement();
             String tableName = "HOMEPOLICY";
@@ -187,7 +209,7 @@ public class Database {
                         "NOBUILDINGS INT," +
                         "WALLMATERIAL VARCHAR(50),"+
                         "ROOFMATERIALS VARCHAR(50),"+
-                        "CONSTRUCTIONQUALITY VARCHAR(10),"+
+                        "CONSTRUCTIONQUALITY VARCHAR(10)"+
                         ")";
                 statement.executeUpdate(createTableQuery);
             }
@@ -196,7 +218,7 @@ public class Database {
         }
     }
     
-    public void idDatabase() {
+    public static void createIdTable() {
         try {
             statement = conn.createStatement();
             String tableName = "ID";
@@ -212,12 +234,12 @@ public class Database {
                         "STAFF INT," +
                         "AUTOPOLICY INT," +
                         "LIFEPOLICY INT," +
-                        "HOMEPOLICY INT," +
+                        "HOMEPOLICY INT" +
                         ")";
                 
                 statement.executeUpdate(createTableQuery);
                 
-                String insertQuery = "INSERT INTO ID VALUES (101111,201111,301111,401111,501111)";
+                String insertQuery = "INSERT INTO ID VALUES (101111,201112,301111,401111,501111)";
                 statement.executeUpdate(insertQuery);
             }
             
@@ -226,7 +248,7 @@ public class Database {
         }
     }
     
-    public ArrayList<Staff> getStaffList() {
+    public static ArrayList<Staff> getStaffList() {
         ArrayList<Staff> staffList = new ArrayList<>();
         
         try {
@@ -257,7 +279,7 @@ public class Database {
         return staffList;
     }
     
-    public ArrayList<Customer> getCustomerList() {
+    public static ArrayList<Customer> getCustomerList() {
         ArrayList<Customer> custList = new ArrayList<>();
         
         try {
@@ -286,7 +308,7 @@ public class Database {
         return custList;
     }
     
-    public ArrayList<Policy> getPolicyList() {
+    public static ArrayList<Policy> getPolicyList() {
         ArrayList<Policy> policyList = new ArrayList<>();
         policyList.addAll(getAutoPolicyList());
         policyList.addAll(getHomePolicyList());
@@ -294,7 +316,7 @@ public class Database {
         return policyList;
     }
     
-    private ArrayList<Policy> getAutoPolicyList() {
+    private static ArrayList<Policy> getAutoPolicyList() {
         ArrayList<Policy> policyList = new ArrayList<>();
         try {
             statement = conn.createStatement();
@@ -312,7 +334,7 @@ public class Database {
                 double premium = rs.getDouble("PREMIUM");
                 String make = rs.getString("MAKE");
                 String model = rs.getString("MODEL");
-                int year = rs.getInt("YEAR");
+                int year = rs.getInt("YEARMADE");
                 String currentLicense = rs.getString("CURRENTLICENSE");
                 boolean accidentHistory = rs.getBoolean("ACCIDENTHISTORY");
                 boolean commercialUse = rs.getBoolean("COMMERICALUSE");
@@ -328,7 +350,7 @@ public class Database {
         return policyList;
     }
 
-    private ArrayList<Policy> getHomePolicyList() {
+    private static ArrayList<Policy> getHomePolicyList() {
         ArrayList<Policy> policyList = new ArrayList<>();
         try {
             statement = conn.createStatement();
@@ -364,7 +386,7 @@ public class Database {
         return policyList;
     }
 
-    private ArrayList<Policy> getLifePolicyList() {
+    private static ArrayList<Policy> getLifePolicyList() {
         ArrayList<Policy> policyList = new ArrayList<>();
         ArrayList<String> medicalConditions = getMedicalHistoryDatabase();
 
@@ -384,7 +406,7 @@ public class Database {
                 String frequency = rs.getString("PAYMENTFREQUENCY");
                 String occupationRisk = rs.getString("OCCUPATIONRISK");
                 String hobbyRisk = rs.getString("HOBBYRISK");
-                boolean gym = rs.getBoolean("GYM");
+                boolean gym = rs.getBoolean("HAS_GYM");
                 boolean smoker = rs.getBoolean("SMOKER");
                 
                 ArrayList<LifePolicy.MedicalCondition> customerConditions = new ArrayList<>();
@@ -409,7 +431,7 @@ public class Database {
         return policyList;
     }
     
-    private ArrayList<String> getMedicalHistoryDatabase() {
+    private static ArrayList<String> getMedicalHistoryDatabase() {
         ArrayList<String> medicalConditions = new ArrayList<>();
         try {
             statement = conn.createStatement();
@@ -432,15 +454,159 @@ public class Database {
         return medicalConditions;
    }
    
-    public void addStaff() {
-        
+    public static void addStaff(Staff staff) {
+        try {
+            statement = conn.createStatement();
+            //Insert one person so that you aren't locked out of the program
+            String insertQuery = "INSERT INTO STAFF VALUES (" +
+                    staff.getId() + ", '" +
+                    staff.getFirstName() + "', '" +
+                    staff.getLastName() + "', " +
+                    staff.getBirthYear() + ", " +
+                    staff.getExtension() + ", '" +
+                    staff.getEmail() + "', '" +
+                    staff.getPassword() + "', " +
+                    staff.isManager() +
+                    ")";
+            
+            statement.executeUpdate(insertQuery);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
     
-    public void addCustomer() {
-        
+    public static void addCustomer(Customer customer) {
+        try {
+            statement = conn.createStatement();
+            //Insert one person so that you aren't locked out of the program
+            String insertQuery = "INSERT INTO CUSTOMER VALUES (" +
+                "'" + customer.getId() + "', " +
+                "'" + customer.getFirstName() + "', " +
+                "'" + customer.getLastName() + "', " +
+                      customer.getBirthYear() + ", " +
+                "'" + customer.getPhoneNumber() + "', " +
+                "'" + customer.getEmail() + "'" +
+                ")";
+            
+            statement.executeUpdate(insertQuery);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
     
-    public void addPolicy() {
-        
+    public static void addPolicy(Policy policy) {
+        if (policy instanceof AutoPolicy) {
+            addAutoPolicy((AutoPolicy) policy);
+        } else if (policy instanceof HomePolicy) {
+            addHomePolicy((HomePolicy) policy);
+        } else {
+            addLifePolicy((LifePolicy) policy);
+        }
+    }
+    
+    private static void addAutoPolicy(AutoPolicy autoPolicy) {
+        try {
+            statement = conn.createStatement();
+            //Insert one person so that you aren't locked out of the program
+            String insertQuery = "INSERT INTO AUTOPOLICY VALUES (" +
+                "'" + autoPolicy.getPolicyId() + "', " +
+                "'" + autoPolicy.getCustomerId() + "', " +
+                "'" + autoPolicy.getAssetTotal() + "', " +
+                "'" + autoPolicy.getCoverage() + "', " +
+                "'" + autoPolicy.getFrequency() + "', " +
+                "'" + autoPolicy.getYearlyPremium() + "', " +
+                "'" + autoPolicy.getMake() + "', " +
+                "'" + autoPolicy.getModel() + "', " +
+                "'" + autoPolicy.getYear() + "', " +
+                "'" + autoPolicy.getCurrentLicense() + "', " +
+                "'" + autoPolicy.hasAccidentHistory() + "', " +
+                "'" + autoPolicy.isCommercialUse() + "'" +
+                ")";
+            
+            statement.executeUpdate(insertQuery);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private static void addHomePolicy(HomePolicy homePolicy) {
+        try {
+            statement = conn.createStatement();
+            //Insert one person so that you aren't locked out of the program
+            String insertQuery = "INSERT INTO HOMEPOLICY VALUES (" +
+                "'" + homePolicy.getPolicyId() + "', " +
+                "'" + homePolicy.getCustomerId() + "', " +
+                "'" + homePolicy.getAssetTotal() + "', " +
+                "'" + homePolicy.getCoverage() + "', " +
+                "'" + homePolicy.getFrequency() + "', " +
+                "'" + homePolicy.getYearlyPremium() + "', " +
+                "'" + homePolicy.getAddress() + "', " +
+                "'" + homePolicy.getYearBuilt() + "', " +
+                "'" + homePolicy.getLevels() + "', " +
+                "'" + homePolicy.getSquareMeters() + "', " +
+                "'" + homePolicy.getNoBuildings() + "', " +
+                "'" + homePolicy.getWallMaterial() + "', " +
+                "'" + homePolicy.getRoofMaterial() + "', " +
+                "'" + homePolicy.getConstructionQuality() + "'" +
+                ")";
+            
+            statement.executeUpdate(insertQuery);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+    
+    private static void addLifePolicy(LifePolicy lifePolicy) {
+        try {
+            statement = conn.createStatement();
+            //Insert one person so that you aren't locked out of the program
+            String insertQuery = "INSERT INTO LIFEPOLICY VALUES (" +
+                "'" + lifePolicy.getPolicyId() + "', " +
+                "'" + lifePolicy.getCustomerId() + "', " +
+                "'" + lifePolicy.getAssetTotal() + "', " +
+                "'" + lifePolicy.getCoverage() + "', " +
+                "'" + lifePolicy.getFrequency() + "', " +
+                "'" + lifePolicy.getYearlyPremium() + "', " +
+                "'" + lifePolicy.getOccupationRisk() + "', " +
+                "'" + lifePolicy.getHobbyRisk() + "', " +
+                "'" + lifePolicy.isGym() + "', " +
+                "'" + lifePolicy.isSmoker() + "'" +
+                ")";
+            
+            String insertConditions = "INSERT INTO TABLE MEDICALHISTORY VALUES ";
+            
+            for(LifePolicy.MedicalCondition condition:lifePolicy.getMedicalHistory()) {
+                if(lifePolicy.getMedicalHistory().indexOf(condition) != 0) {
+                    insertConditions+=", ";
+                }
+                insertConditions+="("+lifePolicy.getPolicyId()+", '"+condition.toString()+"')";
+            }
+            
+            statement.executeUpdate(insertQuery);
+            statement.executeUpdate(insertConditions);
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
+
+    public static int getNextId(String type) {
+        int id = -1;
+        try {
+            statement = conn.createStatement();
+            
+            String query = "SELECT * FROM ID";
+            ResultSet rs = statement.executeQuery(query);
+
+            id = rs.getInt(type);
+
+            String updateQuery = "UPDATE ID SET " + type + " = " + ++id;
+            statement.executeUpdate(updateQuery);
+            
+            rs.close();
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return id;
     }
 }

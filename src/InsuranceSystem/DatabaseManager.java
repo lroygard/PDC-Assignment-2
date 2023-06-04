@@ -8,7 +8,7 @@ public class DatabaseManager {
     
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
-    private static final String URL = "jdbc:derby:Assignment2DB; create=true";
+    private static final String URL = "jdbc:derby:Assignment2DB;create=true";
     
     Connection conn;
     
@@ -24,7 +24,6 @@ public class DatabaseManager {
         //Establish a connection to Database
         try{
             conn=DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-            System.out.println(URL+" connected...");
         } catch (SQLException ex) {
             System.err.println("SQLException: " + ex.getMessage());
         }
@@ -39,9 +38,4 @@ public class DatabaseManager {
             }
         }
     }
-    
-    /*public static void main(String[] args) {
-        Database db = new Database();
-        System.out.println(db.getConnection());
-    }*/
 }
