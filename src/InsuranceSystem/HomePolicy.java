@@ -139,14 +139,105 @@ public class HomePolicy extends Policy{
         Standard,
     }
     
+    public static double calculatePremium(double coverage, int yearBuilt, int levels, int squareMeters, int noBuildings, String wallMaterial, String roofMaterial, String quality) {
+        HomePolicy dummyHP = new HomePolicy(-1, -1, -1, coverage, -1, "MONTHLY", "", yearBuilt, levels, squareMeters, noBuildings, wallMaterial, roofMaterial, quality);
+        return dummyHP.calculatePremium();
+    }
+    
     @Override
     public double calculatePremium() {
-        //TODO Home calculate premium
-        return -1;
+        int age = SystemPage.CURRENTYEAR - this.getYearBuilt();
+        
+        double premium = this.getCoverage()/100;
+        switch (this.getWallMaterial()) {
+            case Brick_Veneer:
+            case Double_Brick:
+            case Solid_Brickwork:
+            case Stonework_Solid:
+            case Stonework_Vaneer:
+            case Weatherboard_Plank_Cladding:
+                premium *= 1.2;
+                break;
+            case Mud_Brick:
+            case Stucco:
+                premium *= 1.5;
+                break;
+            case Rockcote_EPS:
+            case Sheet_Cladding:
+                premium *= 1.8;
+                break;
+            case Other:
+                premium *= 2;
+                break;
+        }
+
+        switch(roofMaterial) {
+            case Flat_Fibre_Cement:
+                break;
+            case Pitched_Concrete_Tiles:
+            case Pitched_Fibre_Cement_Covering:
+            case Pitched_Metal_Covering:
+            case Pitched_Terracotta_Tiles:
+            case Pitched_Timber_Shingles:
+                premium *= 1.2;
+                break;
+            case Flat_Membrane:
+            case Flat_Metal_Covering:
+            case Pitched_Slate:
+                premium *= 1.5;
+                break;
+            case Other:
+                premium *= 2;
+        }
+        
+        switch (this.getConstructionQuality()) {
+            case Prestige:
+                premium *= 1.5;
+                break;
+            case High:
+                premium *= 1.3;
+                break;
+            case Standard:
+                premium *= 1.1;
+                break;
+        }
+
+        premium += 1000 * (this.getNoBuildings() - 1);        
+        premium *= ((((double) this.getSquareMeters())/100)+1);
+        premium *= (((double) this.getLevels())/10)+1;
+        premium += age;
+        premium *= 10;
+        
+        //Base premium rate
+        if (premium < 1000) {
+            premium = 1000;
+        }
+        
+        return premium;
     }
 
     @Override
     protected int createId() {
         return Database.getNextId("HOMEPOLICY");
     }
+    
+    public static String checkAddress(String address) {
+        int noSpaces = 0;
+        
+        if(address.charAt(0) > '0' && address.charAt(0) < '9') {
+            for (int i = 0; i < address.length(); i++) {
+                if(address.charAt(i) == ' ') {
+                    noSpaces++;
+                }
+            }
+        } 
+        
+        if(noSpaces >= 2) {
+            return address;
+        } 
+        else {
+            return null;
+        }
+    }
+    
 }

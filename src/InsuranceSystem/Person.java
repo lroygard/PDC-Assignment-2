@@ -51,7 +51,7 @@ public abstract class Person {
         this.birthYear = birthYear;
     }
 
-    protected String checkName(String name) {
+    protected static String checkName(String name) {
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
             if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '-')) {

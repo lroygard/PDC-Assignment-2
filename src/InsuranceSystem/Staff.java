@@ -57,7 +57,7 @@ public class Staff extends Person{
         return Database.getNextId("STAFF");
     }
     
-    public int checkExtension(int extension) {
+    public static int checkExtension(int extension) {
         if (extension > 99 && extension < 1000) {
             return extension;
         } else {
@@ -65,28 +65,36 @@ public class Staff extends Person{
         }
     }
     
-    protected String checkPassword(String password) {        
-        String specialChars = "!@#$%^&*";
-        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String lowerCase = "abcdefghijklmnopqrstuvwxyz";
-        String number = "123456789";
+    protected static String checkPassword(String password) {
+        boolean hasSpecialChar = false;
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasNumber = false;
 
-        if (password.length() > 8 && password.length() < 16) {
-            if (stringContains(password, specialChars)) {
-                if (stringContains(password, upperCase)) {
-                    if (stringContains(password, lowerCase)) {
-                        if (stringContains(password, number)) {
-                            return password;
-                        }
-                    }
-                }
+        for (char c : password.toCharArray()) {
+            if (c >= 'A' && c <= 'Z') {
+                hasUpperCase = true;
+            } 
+            if (c >= 'a' && c <= 'z') {
+                hasLowerCase = true;
+            } 
+            if (c >= '0' && c <= '9') {
+                hasNumber = true;
+            } 
+            if ("!@#$%^&*".contains(Character.toString(c))) {
+                hasSpecialChar = true;
             }
         }
-        return null;
 
+        if (password.length() > 8 && password.length() < 16 &&
+            hasSpecialChar && hasUpperCase && hasLowerCase && hasNumber) {
+            return password;
+        }
+
+        return null;
     }
     
-    private boolean stringContains(String string, String test) {
+    private static boolean stringContains(String string, String test) {
         for (int i = 0; i < string.length(); i++) {
             for (int j = 0; j < test.length(); j++) {
                 if (string.charAt(i) == test.charAt(j)) {

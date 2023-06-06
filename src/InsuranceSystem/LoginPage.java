@@ -45,6 +45,7 @@ public class LoginPage extends JFrame {
                     if (correct) {
                         SystemPage sp = new SystemPage(loggedInStaff);
                         sp.setVisible(true);
+                        dispose();
                     } else {
                         panel.add(wrongPassword);
                         panel.repaint();

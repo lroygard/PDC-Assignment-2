@@ -9,7 +9,7 @@ public class SystemPage extends JFrame {
     public static final int CURRENTYEAR = 2023;
     public final InsuranceSystem insSys = new InsuranceSystem();
     
-    private HomePage homePage = new HomePage();
+    private HomePage homePage = new HomePage(this);
     private JPanel currentPanel;
     
     //Components on background
@@ -17,8 +17,6 @@ public class SystemPage extends JFrame {
     JButton backButton;
       
     public SystemPage(Staff staff) {
-        //setLayout(null);
-
         insSys.currentStaff = staff;
         insSys.currentCustomer = new Customer(1111,"Bob","Smith",2000,"(021) 215 0603", "bobsmith@gmail.com");
 
@@ -128,70 +126,6 @@ public class SystemPage extends JFrame {
         add(currentPanel);
     }
     
-    //TODO own class
-    public void createAutoPolicy() {
-        JPanel createAutoPolicyP = new JPanel(null);
-        Font font = new Font(null, Font.PLAIN, 16);
-        
-        int x = 150;
-        int y = 250;
-        int width = 150;
-        int height = 25;
-        
-        JLabel createAutoPolicy = createLabel("Auto Policy",new Font(null,Font.BOLD,18),425,150,width,height);
-        createAutoPolicy.add(createAutoPolicy);
-        
-                               //300        350          400          450                500                  550
-        String[] labelNames = {"Car Make:", "Car Model", "Year Made", "Current License", "Accident History:", "Commercial Use"};
-        
-        for (int i = 0; i < labelNames.length; i++) {
-            y += 50;
-            JLabel label = createLabel(labelNames[i], font, x, y, width, height);
-            createAutoPolicyP.add(label);
-        }
-        
-        x += width;
-                
-        JComboBox make = createComboBox(x, y+=50, width, height);
-        for (AutoPolicy.CarBrand carBrand : AutoPolicy.CarBrand.values()) {
-            make.addItem(carBrand.name());
-        }
-        
-        JComboBox model = createComboBox(x,y+=50, width, height);
-        
-        make.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String brand = make.getSelectedItem().toString();
-                if (brand != null && !brand.isEmpty()) {
-                    ArrayList<CarModel> models = AutoPolicy.CARMODELS.get(make);
-                    model.removeAll();
-                    for (CarModel carModel: models) {
-                        model.addItem(carModel.getName());
-                    }
-                }
-            }
-        });
-        
-        JComboBox year = createComboBox(x,y+=50,width,height);
-        for (int i = CURRENTYEAR - 18; i > CURRENTYEAR - 100; i--) {
-            year.addItem(String.valueOf(i));
-        }
-        
-        JComboBox currentLicense = createComboBox(x,y+=50,width,height);
-        for (AutoPolicy.LicenseType licenseType: AutoPolicy.LicenseType.values()) {
-            currentLicense.addItem(licenseType.name());
-        }
-        
-        JComboBox accidentHistory = createComboBox(x,y+=50,width,height);
-        accidentHistory.addItem("True");
-        accidentHistory.addItem("false");
-        
-        
-        JComboBox commercialUse = createComboBox(x,y+=50,width,height);
-        commercialUse.addItem("True");
-        commercialUse.addItem("False");
-    }
-
     public void showPanel(JPanel panel) {
         if (currentPanel != null) {
             remove(currentPanel);
@@ -242,6 +176,13 @@ public class SystemPage extends JFrame {
     }
     
     public static JLabel createLabel(String text, Font font, Color colour, int x, int y, int width, int height) {
+        JLabel label = new JLabel(text);
+        label.setForeground(colour);
+        label.setBounds(x, y, width, height);
+        return label;
+    }
+    
+    public static JLabel createLabel(String text, Color colour, int x, int y, int width, int height) {
         JLabel label = new JLabel(text);
         label.setForeground(colour);
         label.setBounds(x, y, width, height);

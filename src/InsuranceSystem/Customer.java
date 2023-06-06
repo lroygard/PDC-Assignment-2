@@ -41,7 +41,7 @@ public class Customer extends Person {
         this.policies = new ArrayList<>();
     }
 
-    public String checkPhoneNumber(String number) {
+    public static String checkPhoneNumber(String number) {
         number = number.replaceAll("[^0-9]", "");
         StringBuilder sb = new StringBuilder();
 
@@ -73,7 +73,7 @@ public class Customer extends Person {
         return sb.toString();
     }
     
-    public String checkEmail(String email) {
+    public static String checkEmail(String email) {
         for (int i = 0; i < email.length(); i++) {
             if (email.charAt(i) == '@') {
                 return email.toLowerCase();
@@ -83,13 +83,8 @@ public class Customer extends Person {
         return null;
     }
     
-    
-    
-    
     @Override
     public int createId() {
         return Database.getNextId("CUSTOMER");
     }
-    
-    
 }

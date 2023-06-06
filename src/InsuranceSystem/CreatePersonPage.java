@@ -3,18 +3,22 @@ package InsuranceSystem;
 import java.awt.*;
 import javax.swing.*;
 
-public class CreatePersonPage {
+public abstract class CreatePersonPage {
     JTextField firstName;
     JTextField lastName;    
     JComboBox birthYear;
     JPanel createPersonP;
     final Font font = new Font(null, Font.PLAIN, 16);;
-    final int x = 150;
-    final int y = 150;
-    final int width = 150;
-    final int height = 25;
+    int x;
+    int y;
+    int width;
+    int height;
     
     public CreatePersonPage() {
+        x = 150;
+        y = 150;
+        width = 150;
+        height = 25;
         createPersonP = new JPanel(null);
         createPersonP.setBackground(Color.WHITE);
 
@@ -44,7 +48,7 @@ public class CreatePersonPage {
     }
     
     public void createBirthYear() {
-        birthYear = SystemPage.createComboBox(x, 250, width, height);
+        birthYear = SystemPage.createComboBox(x+width, 250, width, height);
         for (int i = SystemPage.CURRENTYEAR - 18; i > SystemPage.CURRENTYEAR - 100; i--) {
             birthYear.addItem(String.valueOf(i));
         }

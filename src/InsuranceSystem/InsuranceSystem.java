@@ -13,6 +13,7 @@ public class InsuranceSystem {
     Staff currentStaff;
     Customer currentCustomer;
     
+    
     public InsuranceSystem() {
         this.staff = Database.getStaffList();
         this.customers = Database.getCustomerList();
@@ -32,27 +33,28 @@ public class InsuranceSystem {
     }
     
     public ArrayList<JLabel> createCustomer(String firstName, String lastName, int birthYear, String phoneNumber, String email) {
-        Customer dummyCust = new Customer();
         ArrayList<JLabel> errors = new ArrayList<>();
         
-        String newFirstName = dummyCust.checkName(firstName);
-        String newLastName = dummyCust.checkName(lastName);
+        String newFirstName = Customer.checkName(firstName);
+        String newLastName = Customer.checkName(lastName);
         if (newFirstName == null || newLastName == null) {
             errors.add(SystemPage.createLabel("! Name must contain only letters and hyphons", new Font(null, Font.PLAIN, 14), Color.RED, 625, 200, 300, 25));
         }
         
-        String newPhoneNumber = dummyCust.checkPhoneNumber(phoneNumber);
+        String newPhoneNumber = Customer.checkPhoneNumber(phoneNumber);
         if (newPhoneNumber == null) {
             errors.add(SystemPage.createLabel("! Phone number must be a valid New Zealand number", new Font(null, Font.PLAIN, 14), Color.RED, 625, 300, 300, 25));
         }
         
-        String newEmail = dummyCust.checkEmail(email);
+        String newEmail = Customer.checkEmail(email);
         if (newEmail == null) {
             errors.add(SystemPage.createLabel("! Email must contains '@'", new Font(null, Font.PLAIN, 14), Color.RED, 625, 350, 300, 25));
         }
         
         if (errors.isEmpty()) {
-            Customer newCustomer = new Customer(dummyCust.createId(), newFirstName, newLastName, birthYear, newPhoneNumber, newEmail);
+            int id = Database.getNextId("CUSTOMER");
+            System.out.println(id);
+            Customer newCustomer = new Customer(id, newFirstName, newLastName, birthYear, newPhoneNumber, newEmail);
             this.customers.add(newCustomer);
             Database.addCustomer(newCustomer);
             errors.add(SystemPage.createLabel("Customer successfully created", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
@@ -62,18 +64,17 @@ public class InsuranceSystem {
     }    
 
     public ArrayList<JLabel> createStaff(String firstName, String lastName, int birthYear, String extension, String password, boolean manager) {
-        Staff dummyStaff = new Staff();
         ArrayList<JLabel> errors = new ArrayList<>();
         
-        String newFirstName = dummyStaff.checkName(firstName);
-        String newLastName = dummyStaff.checkName(lastName);
+        String newFirstName = Staff.checkName(firstName);
+        String newLastName = Staff.checkName(lastName);
         if (newFirstName == null || newLastName == null) {
             errors.add(SystemPage.createLabel("! Name must contain only letters and hyphons", new Font(null, Font.PLAIN, 14), Color.RED, 625, 200, 300, 25));
         }
         
         int newExtension;
         try {
-            newExtension= dummyStaff.checkExtension(Integer.parseInt(extension));
+            newExtension= Staff.checkExtension(Integer.parseInt(extension));
 
         } catch(NumberFormatException e) {
             newExtension = -1;
@@ -82,7 +83,7 @@ public class InsuranceSystem {
             errors.add(SystemPage.createLabel("! Extension must be a 3 digit number", new Font(null, Font.PLAIN, 14), Color.RED, 625, 300, 300, 25));
         }
 
-        String newPassword = dummyStaff.checkPassword(password);
+        String newPassword = Staff.checkPassword(password);
         if (newPassword == null) {
             errors.add(SystemPage.createLabel("! Password must contain: 8-16 characters,", new Font(null, Font.PLAIN, 14), Color.RED, 625, 330, 300, 25));
             errors.add(SystemPage.createLabel("! One lowercase and one uppercase letter,", new Font(null, Font.PLAIN, 14), Color.RED, 625, 350, 300, 25));
@@ -91,16 +92,124 @@ public class InsuranceSystem {
         }
         
         if (errors.isEmpty()) {
-            int id = dummyStaff.createId();
+            int id = Database.getNextId("STAFF");
             String email = id + "@blacktieinsurance.co.nz"; 
             Staff newStaff = new Staff(id, newFirstName, newLastName, birthYear, newExtension, email, newPassword, manager);
             this.staff.add(newStaff);
             Database.addStaff(newStaff);
-            errors.add(SystemPage.createLabel("Customer successfully created", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
+            errors.add(SystemPage.createLabel("Staff member successfully created", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
         }
-       
         
         return errors;
     }
     
+    /*public ArrayList<JLabel> createAuto(double assetTotal, String coverage, String paymentFrequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
+        boolean check = checkCoverage(coverage, assetTotal);
+        
+        if (check) {
+            int id = Database.getNextId("AUTOPOLICY");
+            double yearlyPremium = AutoPolicy.calculatePremium(Integer.parseInt(coverage), paymentFrequency, make,model,year,currentLicense,accidentHistory,commercialUse);
+            AutoPolicy newPolicy = new AutoPolicy(id, this.currentCustomer.getId(), assetTotal, Integer.parseInt(coverage), yearlyPremium, paymentFrequency, make, model, year, currentLicense, accidentHistory, commercialUse);
+            errors.add(SystemPage.createLabel("Policy added to the current customer", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
+        }
+        
+        return errors;
+    }*/
+    
+    public static boolean checkCoverage(String coverage, double assetTotal) {
+        if(assetTotal == 0) {
+            return false;
+        }
+        
+        double newCoverage;
+        try {
+            newCoverage = Policy.checkCoverage(Double.parseDouble(coverage), assetTotal);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public static ArrayList<JLabel> checkAutoAndLife(String coverage, double assetTotal) {
+        ArrayList<JLabel> errors = new ArrayList<>();
+        
+        boolean checkCoverage = checkCoverage(coverage, assetTotal);
+        if (!checkCoverage) {
+            if (assetTotal < 1000) {
+                errors.add(SystemPage.createLabel("! Must be a number bigger than 1000", Color.RED, 150, 625, 300, 25));
+            }
+            else {
+                errors.add(SystemPage.createLabel("!", Color.RED, 520, 275, 300, 25));
+            }
+        }
+        
+        return errors;
+    }
+    
+    public static ArrayList<JLabel> checkHome(String coverage, double assetTotal, String address, String squareMeters) {
+        ArrayList<JLabel> errors = new ArrayList<>();
+        
+        boolean checkCoverage = checkCoverage(coverage, assetTotal);
+        if (!checkCoverage) {
+            if (assetTotal < 1000) {
+                errors.add(SystemPage.createLabel("! Must be a number bigger than 1000", Color.RED, 150, 625, 300, 25));
+            }
+            else {
+                errors.add(SystemPage.createLabel("!", Color.RED, 520, 275, 300, 25));
+            }
+        }
+        
+        String newAddress = HomePolicy.checkAddress(address);
+        if (newAddress == null) {
+            errors.add(SystemPage.createLabel("! Address must include number + street name & type", Color.RED, 150, 225, 300, 25));
+        }
+        
+        int newSquareMeters = 0;
+        try {
+            newSquareMeters = Integer.valueOf(squareMeters);
+        } catch (NumberFormatException e) {
+            errors.add(SystemPage.createLabel("! Must be a number", Color.RED, 150, 375, 200, 25));
+        }
+        
+        return errors;
+    }
+    
+    public ArrayList<Customer> searchCustomerName(String name) {
+        ArrayList<Customer> foundCustomer = new ArrayList<>();
+        name = name.toLowerCase();
+        for (Customer customer: customers) {
+            String custName = customer.getFullName().toLowerCase();
+            if (custName.contains(name)) {
+                foundCustomer.add(customer);
+            }
+        }
+        
+        return foundCustomer;
+    }
+    
+    public ArrayList<Customer> searchCustomerId(String id) {
+        ArrayList<Customer> foundCustomer = new ArrayList<>();
+        
+        for (Customer customer: customers) {
+            String custId = String.valueOf(customer.getId());
+            if (custId.contains(id)) {
+                foundCustomer.add(customer);
+            }
+        }
+        
+        return foundCustomer;
+    }
+    
+    public static boolean searchCheckId(String id) {
+        try {
+            int intId = Integer.parseInt(id);
+            if (intId >= 100) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+        
+        }
+        
+        return false;
+    }
 }

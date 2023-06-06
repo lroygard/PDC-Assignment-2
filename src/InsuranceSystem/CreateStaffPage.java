@@ -1,44 +1,43 @@
 package InsuranceSystem;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
 public class CreateStaffPage extends CreatePersonPage {
-
+    
+    SystemPage sp;
     JPanel createStaffP;
+    JLabel createStaff;
     JTextField extension;
     JTextField password;
     JButton save;
     JComboBox manager;
     
-    public CreateStaffPage() {
-        createStaffP = createPersonP;
+    public CreateStaffPage(SystemPage sp) {
+        this.sp = sp;
+        createStaffP = super.createPersonP;
+        createStaff = SystemPage.createLabel("Create Staff",new Font(null,Font.BOLD,18),425,150,width,height);
         
-        extension = createTextField("Enter Extension", x, y, width, height); 
-        password = createTextField("Enter Password", x, y + 50, width, height);
-        createManager();
+        extension = SystemPage.createTextField("Enter Extension", x+width, 300, width, height); 
+        password = SystemPage.createTextField("Enter Password", x+width, 350, width, height);
+        
         createSave();
-        
-        addToPanel();
-    }
-    
-    public void addToPanel() {
-        createStaffP.add(extension);
-        createStaffP.add(password);
-        createStaffP.add(manager);
-        createStaffP.add(save);
+        addSLabels();
+        createManager();
+        addToSPanel();
     }
     
     public void createManager() {
-        manager = createComboBox(x,y+100,width,height);
+        manager = SystemPage.createComboBox(x+width,400,width,height);
         manager.addItem("True");
         manager.addItem("False");
     }
     
     public void createSave() {
-        save = createButton("Save Details", x, y+140, width, height);
+        save = SystemPage.createButton("Save Details", x+width, 450, width, height);
         final ArrayList<JLabel>[] errorsWrapper = new ArrayList[]{new ArrayList<>()};
         
         save.addActionListener(new ActionListener() {
@@ -47,7 +46,7 @@ public class CreateStaffPage extends CreatePersonPage {
                     createStaffP.remove(label);
                 }
                 
-                errorsWrapper[0] = insSys.createStaff(firstName.getText(), lastName.getText(), 
+                errorsWrapper[0] = sp.insSys.createStaff(firstName.getText(), lastName.getText(), 
                     Integer.parseInt(birthYear.getSelectedItem().toString()), 
                     extension.getText(), password.getText(), 
                     Boolean.parseBoolean(manager.getSelectedItem().toString()));
@@ -55,9 +54,26 @@ public class CreateStaffPage extends CreatePersonPage {
                 for (JLabel label: errorsWrapper[0]) {
                     createStaffP.add(label);
                 }
-                createStaffP.revalidate();
+                
                 createStaffP.repaint();
-                repaint();
+                sp.repaint();
         }});
+    }
+    
+    public void addToSPanel() {
+        createStaffP.add(extension);
+        createStaffP.add(password);
+        createStaffP.add(manager);
+        createStaffP.add(save);
+    }
+    
+    public void addSLabels() {
+        String[] labelNames = {"Extension:", "Password:", "Manager:"};
+        y = 250;
+        for (int i = 0; i < labelNames.length; i++) {
+            y += 50;
+            JLabel label = SystemPage.createLabel(labelNames[i],font,x,y,width,height);
+            createStaffP.add(label);
+        }
     }
 }

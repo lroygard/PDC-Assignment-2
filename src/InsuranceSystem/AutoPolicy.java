@@ -128,9 +128,46 @@ public class AutoPolicy extends Policy {
 
     @Override
     public double calculatePremium() {
-        //TODO: Auto Calculate Premium
-        return -1;
+        int age = Policy.CURRENTYEAR - this.getYear();
+        double premium = this.getCoverage()/4;
+        
+        premium *= ((this.getModel().getRisk()/10)+1);
+
+        if (age <= 5) {
+            premium *= 1.05;
+        } else if (age <= 10) {
+            premium *= 1.1;
+        } else {
+            premium *= 1.15;
+        }
+
+        if (this.getCurrentLicense() == LicenseType.Learners) {
+            premium *= 1.1;
+        } else if (this.getCurrentLicense() == LicenseType.Restricted) {
+            premium *= 1.05;
+        }
+
+        if (this.hasAccidentHistory()) {
+            premium *= 1.2;
+        }
+
+        if (this.isCommercialUse()) {
+            premium *= 1.1;
+        }
+
+        //Base premium rate
+        if (premium < 1000) {
+            premium = 1000;
+        }
+        
+        return premium;
     }
+    
+    public static double calculatePremium(double coverage, String frequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
+        AutoPolicy dummyAP = new AutoPolicy(-1, -1, -1, coverage, -1, frequency, make, model, year, currentLicense, accidentHistory, commercialUse);
+        return dummyAP.calculatePremium();
+    }
+
 
     @Override
     protected int createId() {
@@ -295,7 +332,7 @@ public class AutoPolicy extends Policy {
 
         ArrayList<CarModel> other = new ArrayList<>();
         for (int i = 1; i <= 10; i++){
-            other.add(new CarModel(Integer.toString(i), i));
+            other.add(new CarModel("Risk Factor: "+Integer.toString(i), i));
         }
         newCarModels.put(CarBrand.Other, other);
         

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Database {
     
-    private static final DatabaseManager dbManager = new DatabaseManager();;
-    private static final Connection conn = dbManager.getConnection();;
-    private static Statement statement ;
+    private static final DatabaseManager dbManager = new DatabaseManager();
+    private static final Connection conn = dbManager.getConnection();
+    private static Statement statement;
     
     public Database() {        
         //dropAllTables();
@@ -29,16 +29,16 @@ public class Database {
             for(int i = 0; i < 6; i++) {
                 ResultSet table = conn.getMetaData().getTables(null, null, tables[i], null);
                 boolean tableExists = table.next();
-                table.close();
                 
                 if(tableExists) {
                     statement.executeUpdate("DROP TABLE " + tables[i]);
                 }
+                
+                statement.close();
             }
-            
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
-        }   
+        }
     }
     
     public static void createStaffTable() {
@@ -48,7 +48,6 @@ public class Database {
 
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
 
             if (!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
@@ -68,6 +67,9 @@ public class Database {
                 String insertQuery = "INSERT INTO STAFF VALUES (201111, 'Bob', 'Smith', 1989, 101, '201111@blacktieinsurance.co.nz', 'BobSmith1!', true)";
                 statement.executeUpdate(insertQuery);
             }
+            
+            tables.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -80,7 +82,6 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
                 
@@ -96,6 +97,8 @@ public class Database {
                 statement.executeUpdate(createTableQuery);
             }
             
+            tables.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -108,7 +111,6 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
@@ -127,6 +129,9 @@ public class Database {
                         ")";
                         
                 statement.executeUpdate(createTableQuery);
+                
+                tables.close();
+                statement.close();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -140,7 +145,6 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
@@ -157,6 +161,9 @@ public class Database {
                         ")";
                 
                 statement.executeUpdate(createTableQuery);
+                
+                tables.close();
+                statement.close();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -170,7 +177,6 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
@@ -180,6 +186,8 @@ public class Database {
                 
                 statement.executeUpdate(createTableQuery);
             }
+            tables.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -192,7 +200,6 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
@@ -212,6 +219,8 @@ public class Database {
                         "CONSTRUCTIONQUALITY VARCHAR(10)"+
                         ")";
                 statement.executeUpdate(createTableQuery);
+                tables.close();
+                statement.close();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -225,10 +234,8 @@ public class Database {
             
             ResultSet tables = conn.getMetaData().getTables(null, null, tableName, null);
             boolean tableExists = tables.next();
-            tables.close();
             
             if(!tableExists) {
-                
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
                         "CUSTOMER INT,"+
                         "STAFF INT," +
@@ -243,6 +250,8 @@ public class Database {
                 statement.executeUpdate(insertQuery);
             }
             
+            tables.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -255,10 +264,8 @@ public class Database {
             statement = conn.createStatement();
             
             String getStaff = "SELECT * FROM STAFF";
-            ResultSet rs = null;
-            
-            rs = statement.executeQuery(getStaff);
-            
+            ResultSet rs = statement.executeQuery(getStaff);
+                        
             while(rs.next()) {
                 int id = rs.getInt("ID");
                 String firstName = rs.getString("FIRSTNAME");
@@ -272,6 +279,7 @@ public class Database {
                 staffList.add(new Staff(id,firstName,lastName,birthYear,extension,email,password,manager));
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -286,21 +294,20 @@ public class Database {
             statement = conn.createStatement();
             
             String getCustomer = "SELECT * FROM CUSTOMER";
-            ResultSet rs = null;
-            
-            rs = statement.executeQuery(getCustomer);
-            
+            ResultSet rs = statement.executeQuery(getCustomer);
+                        
             while(rs.next()) {
                 int id = rs.getInt("ID");
                 String firstName = rs.getString("FIRSTNAME");
                 String lastName = rs.getString("LASTNAME");
                 int birthYear = rs.getInt("BIRTHYEAR");
-                String phoneNumber = rs.getString("EXTENSION");
+                String phoneNumber = rs.getString("PHONENUMBER");
                 String email = rs.getString("EMAIL");
                 
                 custList.add(new Customer(id, firstName, lastName, birthYear, phoneNumber, email));
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -321,10 +328,9 @@ public class Database {
         try {
             statement = conn.createStatement();
             
-            String getCustomer = "SELECT * FROM AUTOPOLICY";
-            ResultSet rs = null;
+            String getAutoPolicy = "SELECT * FROM AUTOPOLICY";
+            ResultSet rs = statement.executeQuery(getAutoPolicy);
             
-            rs = statement.executeQuery(getCustomer);
             while(rs.next()) {
                 int policyId = rs.getInt("POLICYID");
                 int customerId = rs.getInt("CUSTOMERID");
@@ -344,6 +350,7 @@ public class Database {
                         commercialUse));
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -355,10 +362,9 @@ public class Database {
         try {
             statement = conn.createStatement();
             
-            String getCustomer = "SELECT * FROM HOMEPOLICY";
-            ResultSet rs = null;
+            String getHomePolicy = "SELECT * FROM HOMEPOLICY";
+            ResultSet rs = statement.executeQuery(getHomePolicy);
             
-            rs = statement.executeQuery(getCustomer);
             while(rs.next()) {
                 int policyId = rs.getInt("POLICYID");
                 int customerId = rs.getInt("CUSTOMERID");
@@ -380,6 +386,7 @@ public class Database {
                         wallMaterial, roofMaterial, quality));
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -393,10 +400,9 @@ public class Database {
         try {
             statement = conn.createStatement();
             
-            String getCustomer = "SELECT * FROM LIFEPOLICY";
-            ResultSet rs = null;
+            String getLifePolicyList = "SELECT * FROM LIFEPOLICY";
+            ResultSet rs = statement.executeQuery(getLifePolicyList);
             
-            rs = statement.executeQuery(getCustomer);
             while(rs.next()) {
                 int policyId = rs.getInt("POLICYID");
                 int customerId = rs.getInt("CUSTOMERID");
@@ -409,13 +415,13 @@ public class Database {
                 boolean gym = rs.getBoolean("HAS_GYM");
                 boolean smoker = rs.getBoolean("SMOKER");
                 
-                ArrayList<LifePolicy.MedicalCondition> customerConditions = new ArrayList<>();
+                ArrayList<String> customerConditions = new ArrayList<>();
                 
                 for (String condition : medicalConditions) {
                     String[] parts = condition.split(":");
                     int conditionPolicyId = Integer.parseInt(parts[0]);
                     if (conditionPolicyId == policyId) {
-                        customerConditions.add(LifePolicy.MedicalCondition.valueOf(parts[1]));
+                        customerConditions.add(parts[1]);
                     }
                 }
                 
@@ -425,6 +431,7 @@ public class Database {
                 
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -436,10 +443,9 @@ public class Database {
         try {
             statement = conn.createStatement();
             
-            String getCustomer = "SELECT * FROM MEDICALHISTORY";
-            ResultSet rs = null;
+            String getMedicalHistoryDatabase = "SELECT * FROM MEDICALHISTORY";
+            ResultSet rs = statement.executeQuery(getMedicalHistoryDatabase);
             
-            rs = statement.executeQuery(getCustomer);
             while(rs.next()) {
                 int policyId = rs.getInt("POLICYID");
                 String medicalCondition = rs.getString("MEDICALCONDITION");
@@ -448,6 +454,7 @@ public class Database {
                 medicalConditions.add(condition);
             }
             rs.close();
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -470,6 +477,7 @@ public class Database {
                     ")";
             
             statement.executeUpdate(insertQuery);
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -480,7 +488,7 @@ public class Database {
             statement = conn.createStatement();
             //Insert one person so that you aren't locked out of the program
             String insertQuery = "INSERT INTO CUSTOMER VALUES (" +
-                "'" + customer.getId() + "', " +
+                customer.getId() + ", " +
                 "'" + customer.getFirstName() + "', " +
                 "'" + customer.getLastName() + "', " +
                       customer.getBirthYear() + ", " +
@@ -489,6 +497,7 @@ public class Database {
                 ")";
             
             statement.executeUpdate(insertQuery);
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -524,6 +533,7 @@ public class Database {
                 ")";
             
             statement.executeUpdate(insertQuery);
+            statement.close();
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
@@ -589,7 +599,7 @@ public class Database {
         }
     }
 
-    public static int getNextId(String type) {
+    public static int getNextId(String text) {
         int id = -1;
         try {
             statement = conn.createStatement();
@@ -597,13 +607,13 @@ public class Database {
             String query = "SELECT * FROM ID";
             ResultSet rs = statement.executeQuery(query);
 
-            id = rs.getInt(type);
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
 
-            String updateQuery = "UPDATE ID SET " + type + " = " + ++id;
+            String updateQuery = "UPDATE ID SET " + text + " = " + ++id;
             statement.executeUpdate(updateQuery);
-            
             rs.close();
-            
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }

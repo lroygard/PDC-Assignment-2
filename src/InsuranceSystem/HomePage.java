@@ -8,6 +8,7 @@ import javax.swing.*;
 public class HomePage {
     
     JPanel homePageP;
+    SystemPage sp;
 
     JLabel customer;
     JLabel staff;
@@ -32,9 +33,10 @@ public class HomePage {
     JButton polNewHome;
     JButton polNewLife;
     
-    public HomePage() {
+    public HomePage(SystemPage sp) {
         homePageP = new JPanel(null);
         homePageP.setBackground(Color.WHITE);
+        this.sp = sp;
         
         createHomePageLabels();
         createCustomerOptions();
@@ -72,9 +74,15 @@ public class HomePage {
         
         custNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateCustomerPage ccp = new CreateCustomerPage();
-                
-            }});
+                CreateCustomerPage ccp = new CreateCustomerPage(sp);
+                sp.showPanel(ccp.createCustomerP);
+        }});
+        
+        custLookUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LookUpCustomerPage luc = new LookUpCustomerPage(sp);
+                sp.showPanel(luc.lookUpCustomerP);
+        }});
     }
         
     public void createPolicyOptions() {
@@ -87,6 +95,24 @@ public class HomePage {
         polNewAuto = SystemPage.createButton("Create a new Auto Policy", x, y+=75, width, height);
         polNewHome = SystemPage.createButton("Create a new Home Policy", x, y+=75, width, height);
         polNewLife = SystemPage.createButton("Create a new Life Policy", x, y+75, width, height);
+    
+        polNewAuto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CreateAutoPolicyPage cap = new CreateAutoPolicyPage(sp);
+                sp.showPanel(cap.createAutoP);
+        }}); 
+        
+        polNewHome.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CreateHomePolicyPage chp = new CreateHomePolicyPage(sp);
+                sp.showPanel(chp.createHomeP);
+        }}); 
+        
+        polNewLife.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CreateLifePolicyPage clp = new CreateLifePolicyPage(sp);
+                sp.showPanel(clp.createLifeP);
+        }});
     }
     
     public void createStaffOptions() {
@@ -102,7 +128,15 @@ public class HomePage {
         
         staffNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                
+                CreateStaffPage csp = new CreateStaffPage(sp);
+                sp.showPanel(csp.createStaffP);
+        }}); 
+        
+        logOut.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                sp.dispose();
+                LoginPage login = new LoginPage();
+                login.setVisible(true);
         }}); 
     }
     

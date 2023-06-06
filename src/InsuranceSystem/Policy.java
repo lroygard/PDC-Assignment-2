@@ -81,4 +81,12 @@ public abstract class Policy {
     
     public abstract double calculatePremium();   
     protected abstract int createId();
+    
+    public static double checkCoverage(double coverage, double assetTotal) {
+        if (coverage >= 1000 && coverage <= assetTotal) {
+            return coverage;
+        } 
+        
+        return -1;
+    }
 }

@@ -22,10 +22,10 @@ public class LifePolicy extends Policy {
     }
     
     public LifePolicy(int policyId, int customerId, double assetTotal, double coverage, 
-            double yearlyPremium, String frequency, ArrayList<MedicalCondition> medicalHistory, 
+            double yearlyPremium, String frequency, ArrayList<String> medicalHistory, 
             String hobbyRisk, String occupationRisk, boolean gym, boolean smoker) {
         super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
-        this.medicalHistory = medicalHistory;
+        this.medicalHistory = stringArrayToMedicalCondition(medicalHistory);
         this.hobbyRisk = Risk.valueOf(hobbyRisk);
         this.occupationRisk = Risk.valueOf(occupationRisk);
         this.gym = gym;
@@ -80,37 +80,108 @@ public class LifePolicy extends Policy {
     }
         
     public static enum MedicalCondition {
-        Allergies,
-        Anxiety,
+        Severe_Allergies,
         Arthritis,
         Asthma,
-        Back_Pain,
-        Bipolar_Disorder,
-        Cancer,
         Chronic_Fatigue_Syndrome,
-        Chronic_Obstructive_Pulmonary_Disease,
         Chrohns_Disease,
-        Depression,
         Diabetes,
-        Fibromyalgia,
-        Gastroesophageal_Reflux_Disease,
         Heart_Disease,
         High_Blood_Pressure,
         High_Cholesterol,
         Irritable_Bowel_Syndrome,
         Migraines,
-        Neck_Pain,
+        Mental_Health_Disorder,
         Obesity,
         Osteoporosis,
         Sleep_Apnea,
-        Thyroid_Disorders,
-        Ulcerative_Colitis,
-        Ulcers
+        Other_Serious_Health_Disorder
+    }
+    
+    public static double calculatePremium(double coverage, boolean isSmoker, boolean isGym, 
+            String hobbyRisk, String occupationRisk, ArrayList<String> medicalConditions) {
+            
+        LifePolicy dummyLife = new LifePolicy(-1,-1, -1, coverage, -1, "MONTHLY", 
+                medicalConditions, hobbyRisk, occupationRisk, isGym, isSmoker);
+    
+        return dummyLife.calculatePremium();
+    }
+    
+    public ArrayList<MedicalCondition> stringArrayToMedicalCondition(ArrayList<String> conditions) {
+        ArrayList<MedicalCondition> newConditions = new ArrayList<>();
+        
+        for (int i = 0; i < conditions.size(); i++) {
+            MedicalCondition condition = MedicalCondition.valueOf(conditions.get(i).replace(" ", "_"));
+            newConditions.add(condition);
+        }
+        
+        return newConditions;
     }
     
     @Override
     public double calculatePremium() {
-        return -1;
+        double premium = this.getCoverage()/4;
+        
+        if (this.isSmoker()) {
+            premium *= 1.5;
+        }
+        
+        if (this.isGym()) {
+            premium -= 500;
+        }
+        
+        switch(this.getHobbyRisk()) {
+            case High:
+                premium *= 1.5;
+                break;
+            case Medium:
+                premium *= 1.3;
+                break;
+        }
+        
+        switch(this.getOccupationRisk()) {
+            case High:
+                premium *= 1.5;
+                break;
+            case Medium:
+                premium *= 1.3;
+                break;
+        }
+        
+        for (MedicalCondition condition : this.getMedicalHistory()) {
+            switch (condition) {
+                case Heart_Disease:
+                    premium *= 2;
+                    break;
+                case High_Blood_Pressure:
+                case Diabetes:
+                case Sleep_Apnea:
+                case Severe_Allergies:
+                    premium *= 1.5;
+                    break;
+                case High_Cholesterol:
+                case Asthma:
+                case Obesity:
+                case Other_Serious_Health_Disorder:
+                    premium *= 1.3;
+                    break;
+                case Migraines:
+                case Irritable_Bowel_Syndrome:
+                case Osteoporosis:
+                case Mental_Health_Disorder:
+                    premium *= 1.1;
+                    break;
+            }
+            
+            return premium;
+        }
+        
+        //Base premium rate
+        if (premium < 1000) {
+            premium = 1000;
+        }
+        
+        return premium;
     }
 
     @Override
