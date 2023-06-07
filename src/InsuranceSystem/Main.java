@@ -2,7 +2,6 @@ package InsuranceSystem;
 
 public class Main {
     public static void main(String[] args) {
-        LoginPage login = new LoginPage();
-        login.setVisible(true);
+        SystemPage sp = SystemPage.getInstance();
     }
 }

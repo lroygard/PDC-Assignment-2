@@ -19,9 +19,7 @@ public class LookUpCustomerPage extends LookUpPage {
     JLabel noPoliciesHeader;
     JLabel currentCustomerHeader;
     
-    public LookUpCustomerPage(SystemPage sp) {
-        super(sp);
-
+    public LookUpCustomerPage() {
         //Create Panel and set Background
         lookUpCustomerP = lookUpP;
         lookUpCustomerP.setBackground(Color.WHITE);
@@ -60,7 +58,7 @@ public class LookUpCustomerPage extends LookUpPage {
         if (check) {
             //Get results and add them
             String id = searchId.getText();
-            results = sp.insSys.searchCustomerId(id);
+            results = InsuranceSystem.getInstance().searchCustomerId(id);
             addResultsLabels();
         } else {
             //Remove prev labels
@@ -73,14 +71,14 @@ public class LookUpCustomerPage extends LookUpPage {
             
             //Repaint to add label
             lookUpCustomerP.repaint();
-            sp.repaint();
+            SystemPage.getInstance().repaint();
         }
     }
     
     @Override
     public void addResultsName() {
         String name = searchName.getText();
-        results = sp.insSys.searchCustomerName(name);
+        results = InsuranceSystem.getInstance().searchCustomerName(name);
         addResultsLabels();
     }
      
@@ -109,7 +107,7 @@ public class LookUpCustomerPage extends LookUpPage {
             }
         }
         lookUpCustomerP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
     } 
     
     @Override
@@ -154,8 +152,8 @@ public class LookUpCustomerPage extends LookUpPage {
             
             currentCustomerButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    sp.insSys.currentCustomer = customer;
-                    sp.updateCustomerVisual(customer);
+                    InsuranceSystem.getInstance().currentCustomer = customer;
+                    SystemPage.getInstance().updateCustomerVisual(customer);
             }}); 
             
             //Add labels to panel and components
@@ -173,7 +171,7 @@ public class LookUpCustomerPage extends LookUpPage {
         }
          
         lookUpCustomerP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
     }
     
     public void addPageButtons() {

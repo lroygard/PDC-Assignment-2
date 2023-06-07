@@ -7,15 +7,13 @@ import javax.swing.*;
 
 public class CreateCustomerPage extends CreatePersonPage {
     
-    SystemPage sp;
     JPanel createCustomerP;
     JLabel createCustomer;
     JTextField phoneNumber;
     JTextField email;
     JButton save; 
     
-    public CreateCustomerPage(SystemPage sp) {
-        this.sp = sp;
+    public CreateCustomerPage() {
         createCustomerP = super.createPersonP;
         createCustomer = SystemPage.createLabel("Create Customer",new Font(null,Font.BOLD,18),425,150,width,height);
         
@@ -37,14 +35,14 @@ public class CreateCustomerPage extends CreatePersonPage {
                     createCustomerP.remove(label);
                 }
                 
-                errorsWrapper[0] = sp.insSys.createCustomer(firstName.getText(), lastName.getText(), 
+                errorsWrapper[0] = InsuranceSystem.getInstance().createCustomer(firstName.getText(), lastName.getText(), 
                 Integer.parseInt(birthYear.getSelectedItem().toString()), phoneNumber.getText(), email.getText());
                 
                 for (JLabel label: errorsWrapper[0]) {
                     createCustomerP.add(label);
                 }
                 createCustomerP.repaint();
-                sp.repaint();
+                SystemPage.getInstance().repaint();
         }});
     }
     

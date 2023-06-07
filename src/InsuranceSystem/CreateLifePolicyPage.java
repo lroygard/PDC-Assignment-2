@@ -8,9 +8,6 @@ import java.util.HashMap;
 import javax.swing.*;
 
 public class CreateLifePolicyPage extends CreatePolicyPage {
-     // For repainting
-    SystemPage sp;
-
     //Panel
     JPanel createLifeP;
     
@@ -23,8 +20,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
     JComboBox gym;
     JComboBox smoker;
     
-    public CreateLifePolicyPage(SystemPage sp) {
-        this.sp = sp;
+    public CreateLifePolicyPage() {
         createLifeP = createPolicyP;
         createLifeP.setBackground(Color.white);
         
@@ -202,7 +198,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
         }
             
         createLifeP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
         return valid;
     }
     
@@ -227,9 +223,9 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
         boolean valid = updatePremium();
         
         if (valid == true) {
-            if (sp.insSys.currentCustomer != null) {
+            if (InsuranceSystem.getInstance().currentCustomer != null) {
                 int id = Database.getNextId("LIFEPOLICY");
-                int customerId = sp.insSys.currentCustomer.getId();
+                int customerId = InsuranceSystem.getInstance().currentCustomer.getId();
 
                 double newAssetTotal = Double.valueOf(assetTotal.getText().replace("$", ""));
                 double newCoverage = Double.valueOf(coverage.getText());
@@ -247,7 +243,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
                         newCoverage, newYearlyPremium, newFrequency, selectedConditions, 
                         newHobbyRisk, newOccupationRisk, newGym, newSmoker);
                 Database.addPolicy(newPolicy);
-                sp.insSys.currentCustomer.addPolicy(newPolicy);
+                InsuranceSystem.getInstance().currentCustomer.addPolicy(newPolicy);
                 JLabel label = SystemPage.createLabel("Policy Successfully Created", Color.BLUE, 575, 525, 300, height);
                 JLabel label2 = SystemPage.createLabel("Life Policy ID:"+id, Color.BLUE, 575, 550, 300, height);
                     currentErrorLabels.add(label);

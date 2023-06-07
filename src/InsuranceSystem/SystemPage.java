@@ -5,9 +5,8 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class SystemPage extends JFrame {
+public class SystemPage extends JFrame implements SystemPageObserver {
     public static final int CURRENTYEAR = 2023;
-    public final InsuranceSystem insSys = new InsuranceSystem();
     
     private HomePage homePage;
     private JPanel currentPanel;
@@ -17,10 +16,29 @@ public class SystemPage extends JFrame {
     JButton backButton;
     JLabel customerLabel;
     JLabel customerInfo;
-      
-    public SystemPage(Staff staff) {
-        insSys.currentStaff = staff;
-        homePage = new HomePage(this);
+    
+    private static SystemPage instance;
+    
+    private SystemPage(){
+        LoginPage lip = new LoginPage(this);
+        lip.setVisible(true);
+    };
+    
+    public static SystemPage getInstance() {
+        if (instance == null) {
+            instance = new SystemPage();
+        }
+        return instance;
+    }
+    
+    @Override
+    public void notifyPasswordCorrect(Staff loggedInStaff) {
+        InsuranceSystem.getInstance().currentStaff = loggedInStaff;
+        createPage();
+    }
+    
+    private void createPage() {
+        homePage = new HomePage();
 
         createLogo();
         createStaffVisual();
@@ -34,9 +52,11 @@ public class SystemPage extends JFrame {
         setResizable(false); 
 
         showPanel(homePage.getPanel());
+        
+        setVisible(true);
     }
         
-    public void createLogo() {
+    private void createLogo() {
         logo = new JLabel();
         logo.setBounds(0,10,250,175);
         
@@ -50,7 +70,7 @@ public class SystemPage extends JFrame {
         add(logo);
     }
     
-    public void createBackButton() {
+    private void createBackButton() {
         backButton = createButton("Show HomePage", Color.WHITE, 390, 55, 200, 50);
         add(backButton);
         
@@ -71,8 +91,8 @@ public class SystemPage extends JFrame {
         Font fontPlain = new Font("Calibri", Font.PLAIN, 15);
         
         JLabel userInfo = createLabel("Logged in as: ", font, x, y+=20, width, height);
-        JLabel user = createLabel(insSys.currentStaff.getFullName(), fontPlain, x+width-100, y, width, height);
-        JLabel managerInfo = createLabel("Manager Permissions: "+Boolean.toString(insSys.currentStaff.isManager()).toUpperCase(), font, x, y+20, width, height);
+        JLabel user = createLabel(InsuranceSystem.getInstance().currentStaff.getFullName(), fontPlain, x+width-100, y, width, height);
+        JLabel managerInfo = createLabel("Manager Permissions: "+Boolean.toString(InsuranceSystem.getInstance().currentStaff.isManager()).toUpperCase(), font, x, y+20, width, height);
 
         add(user);
         add(userInfo);
@@ -91,7 +111,7 @@ public class SystemPage extends JFrame {
         customerLabel = createLabel("Current Customer Selected: ", font, x, y, width, height);
         customerInfo = createLabel("", fontPlain, x+2, y+15, width, height);
         
-        Customer customer = insSys.currentCustomer;
+        Customer customer = InsuranceSystem.getInstance().currentCustomer;
         
         updateCustomerVisual(customer);
         
@@ -117,7 +137,7 @@ public class SystemPage extends JFrame {
         JPanel custDetailP = new JPanel(null);   
         custDetailP.setBackground(Color.WHITE);
         //Get current customer
-        Customer cust = insSys.currentCustomer;
+        Customer cust = InsuranceSystem.getInstance().currentCustomer;
 
         int x = 150;
         int y = 150;
@@ -179,7 +199,7 @@ public class SystemPage extends JFrame {
         return button;
     }
     
-     public static JButton createButton(String text, Color colour, int x, int y, int width, int height) {
+    public static JButton createButton(String text, Color colour, int x, int y, int width, int height) {
         JButton button = new JButton(text);
         button.setBounds(x, y, width, height);
         button.setBackground(colour);

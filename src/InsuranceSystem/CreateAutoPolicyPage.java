@@ -5,10 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class CreateAutoPolicyPage extends CreatePolicyPage {
-    // For repainting
-    SystemPage sp;
-    
+public class CreateAutoPolicyPage extends CreatePolicyPage {    
     //Panel
     JPanel createAutoP;
     
@@ -21,8 +18,7 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
     JComboBox accidentHistory;
     JComboBox commercialUse;
     
-    public CreateAutoPolicyPage(SystemPage sp) {
-        this.sp = sp;
+    public CreateAutoPolicyPage() {
         createAutoP = createPolicyP;
         createAutoP.setBackground(Color.white);
         
@@ -235,7 +231,7 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
         }
         
         createAutoP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
         return valid;
     }
     
@@ -245,9 +241,9 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
         boolean valid = updatePremium();
         
         if (valid == true) {
-            if (sp.insSys.currentCustomer != null) {
+            if (InsuranceSystem.getInstance().currentCustomer != null) {
                 int id = Database.getNextId("AUTOPOLICY");
-                int customerId = sp.insSys.currentCustomer.getId();
+                int customerId = InsuranceSystem.getInstance().currentCustomer.getId();
 
                 double newAssetTotal = Double.valueOf(assetTotal.getText().replace("$", ""));
                 double newCoverage = Double.valueOf(coverage.getText());
@@ -256,6 +252,7 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
 
                 String newMake = make.getSelectedItem().toString();
                 String newModel = model.getSelectedItem().toString();
+                System.out.println(newModel);
                 int newYear = Integer.valueOf(year.getSelectedItem().toString());
                 String newLicense = currentLicense.getSelectedItem().toString();
                 boolean newAccident = Boolean.valueOf(accidentHistory.getSelectedItem().toString());
@@ -266,7 +263,7 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
                         newYearlyPremium, newFrequency, newMake, newModel, newYear, newLicense, 
                         newAccident, newCommercial);
                 Database.addPolicy(newPolicy);
-                sp.insSys.currentCustomer.addPolicy(newPolicy);
+                InsuranceSystem.getInstance().currentCustomer.addPolicy(newPolicy);
                 JLabel label = SystemPage.createLabel("Policy Successfully Created", Color.BLUE, 525, 525, 300, height);
                 JLabel label2 = SystemPage.createLabel("Auto Policy ID:"+id, Color.BLUE, 575, 550, 300, height);
                 currentErrorLabels.add(label);

@@ -20,8 +20,7 @@ public class LookUpStaffPage extends LookUpPage {
     ArrayList<Staff> results;
 
     
-    public LookUpStaffPage(SystemPage sp) {
-        super(sp);
+    public LookUpStaffPage() {
         
         //Create Panel and set Background
         lookUpStaffP = lookUpP;
@@ -60,7 +59,7 @@ public class LookUpStaffPage extends LookUpPage {
         if (check) {
             //Get results and add them
             String id = searchId.getText();
-            results = sp.insSys.searchStaffId(id);
+            results = InsuranceSystem.getInstance().searchStaffId(id);
             addResultsLabels();
         } else {
             //Remove prev labels
@@ -73,14 +72,14 @@ public class LookUpStaffPage extends LookUpPage {
             
             //Repaint to add label
             lookUpStaffP.repaint();
-            sp.repaint();
+            SystemPage.getInstance().repaint();
         }
     }
     
     @Override
     public void addResultsName() {
         String name = searchName.getText();
-        results = sp.insSys.searchStaffName(name);
+        results = InsuranceSystem.getInstance().searchStaffName(name);
         addResultsLabels();
     }
     
@@ -109,7 +108,7 @@ public class LookUpStaffPage extends LookUpPage {
             }
         }
         lookUpStaffP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
     } 
     
     @Override
@@ -165,7 +164,7 @@ public class LookUpStaffPage extends LookUpPage {
         }
          
         lookUpStaffP.repaint();
-        sp.repaint();
+        SystemPage.getInstance().repaint();
     }
     
     public void addPageButtons() {

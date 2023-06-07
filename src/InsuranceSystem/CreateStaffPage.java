@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class CreateStaffPage extends CreatePersonPage {
-    
-    SystemPage sp;
+public class CreateStaffPage extends CreatePersonPage {  
     JPanel createStaffP;
     JLabel createStaff;
     JTextField extension;
@@ -16,8 +14,7 @@ public class CreateStaffPage extends CreatePersonPage {
     JButton save;
     JComboBox manager;
     
-    public CreateStaffPage(SystemPage sp) {
-        this.sp = sp;
+    public CreateStaffPage() {
         createStaffP = super.createPersonP;
         createStaff = SystemPage.createLabel("Create Staff",new Font(null,Font.BOLD,18),425,150,width,height);
         
@@ -46,7 +43,7 @@ public class CreateStaffPage extends CreatePersonPage {
                     createStaffP.remove(label);
                 }
                 
-                errorsWrapper[0] = sp.insSys.createStaff(firstName.getText(), lastName.getText(), 
+                errorsWrapper[0] = InsuranceSystem.getInstance().createStaff(firstName.getText(), lastName.getText(), 
                     Integer.parseInt(birthYear.getSelectedItem().toString()), 
                     extension.getText(), password.getText(), 
                     Boolean.parseBoolean(manager.getSelectedItem().toString()));
@@ -56,7 +53,7 @@ public class CreateStaffPage extends CreatePersonPage {
                 }
                 
                 createStaffP.repaint();
-                sp.repaint();
+                SystemPage.getInstance().repaint();
         }});
     }
     

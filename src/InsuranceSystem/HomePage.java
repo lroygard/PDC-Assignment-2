@@ -6,9 +6,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class HomePage {
-    
     JPanel homePageP;
-    SystemPage sp;
 
     JLabel customer;
     JLabel staff;
@@ -38,10 +36,9 @@ public class HomePage {
     int width = 200;
     int height = 50;
     
-    public HomePage(SystemPage sp) {
+    public HomePage() {
         homePageP = new JPanel(null);
         homePageP.setBackground(Color.WHITE);
-        this.sp = sp;
         
         createHomePageLabels();
         createCustomerOptions();
@@ -77,20 +74,20 @@ public class HomePage {
         
         custNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateCustomerPage ccp = new CreateCustomerPage(sp);
-                sp.showPanel(ccp.createCustomerP);
+                CreateCustomerPage ccp = new CreateCustomerPage();
+                SystemPage.getInstance().showPanel(ccp.createCustomerP);
         }});
         
         custLookUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LookUpCustomerPage luc = new LookUpCustomerPage(sp);
-                sp.showPanel(luc.lookUpCustomerP);
+                LookUpCustomerPage luc = new LookUpCustomerPage();
+                SystemPage.getInstance().showPanel(luc.lookUpCustomerP);
         }});
         
         custPolicy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage(sp);
-                sp.showPanel(vpp.viewCustomerPolicyP);
+                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage();
+                SystemPage.getInstance().showPanel(vpp.viewCustomerPolicyP);
         }});
     }
         
@@ -105,26 +102,26 @@ public class HomePage {
     
         polView.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage(sp);
-                sp.showPanel(vpp.viewCustomerPolicyP);
+                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage();
+                SystemPage.getInstance().showPanel(vpp.viewCustomerPolicyP);
         }});
         
         polNewAuto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateAutoPolicyPage cap = new CreateAutoPolicyPage(sp);
-                sp.showPanel(cap.createAutoP);
+                CreateAutoPolicyPage cap = new CreateAutoPolicyPage();
+                SystemPage.getInstance().showPanel(cap.createAutoP);
         }}); 
         
         polNewHome.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateHomePolicyPage chp = new CreateHomePolicyPage(sp);
-                sp.showPanel(chp.createHomeP);
+                CreateHomePolicyPage chp = new CreateHomePolicyPage();
+                SystemPage.getInstance().showPanel(chp.createHomeP);
         }}); 
         
         polNewLife.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateLifePolicyPage clp = new CreateLifePolicyPage(sp);
-                sp.showPanel(clp.createLifeP);
+                CreateLifePolicyPage clp = new CreateLifePolicyPage();
+                SystemPage.getInstance().showPanel(clp.createLifeP);
         }});
     }
     
@@ -134,7 +131,7 @@ public class HomePage {
 
         staffDetails = SystemPage.createButton("View/Change your details", x, y, width, height);
         
-        if (sp.insSys.currentStaff.isManager()) {
+        if (InsuranceSystem.getInstance().currentStaff.isManager()) {
             createManagerOptions();
         }
         
@@ -142,8 +139,8 @@ public class HomePage {
         
         logOut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                sp.dispose();
-                LoginPage login = new LoginPage();
+                SystemPage.getInstance().dispose();
+                LoginPage login = new LoginPage(SystemPage.getInstance());
                 login.setVisible(true);
         }}); 
     }
@@ -154,14 +151,14 @@ public class HomePage {
         
         staffLookUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                LookUpStaffPage lus = new LookUpStaffPage(sp);
-                sp.showPanel(lus.lookUpStaffP);
+                LookUpStaffPage lus = new LookUpStaffPage();
+                SystemPage.getInstance().showPanel(lus.lookUpStaffP);
         }}); 
         
         staffNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreateStaffPage csp = new CreateStaffPage(sp);
-                sp.showPanel(csp.createStaffP);
+                CreateStaffPage csp = new CreateStaffPage();
+                SystemPage.getInstance().showPanel(csp.createStaffP);
         }}); 
         
         homePageP.add(staffLookUp);

@@ -4,6 +4,7 @@ package InsuranceSystem;
 /**
  * The DataBase class manages the insurance system, including staff, customers, and policies.
  * It interacts with the database to retrieve and store data, and provides methods for adding and querying records.
+ * It has a singleton design pattern
  */
 
 import java.sql.*;
@@ -15,7 +16,20 @@ public class Database {
     private static final Connection conn = dbManager.getConnection();
     private static Statement statement;
     
-    public Database() {        
+    private static Database instance;
+
+    private Database() {
+        initialise();
+    }
+
+    public static synchronized Database getInstance() {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
+    
+    private void initialise() {
         //dropAllTables();
         
         createStaffTable();
@@ -223,7 +237,7 @@ public class Database {
                 // Define the query to create the MEDICALHISTORY table
                 String createTableQuery = "CREATE TABLE " + tableName + " (" +
                         "POLICYID INT," +
-                        "MEDICALCONDITION VARCHAR(50)"+
+                        "MEDICALCONDITION VARCHAR(250)"+
                         ")";
                 
                 // Execute the create table query
@@ -409,7 +423,6 @@ public class Database {
         return policyList;
     }
 
-    
     /**
      * Retrieves a list of auto policies from the database.
      * @return An ArrayList containing AutoPolicy objects.
@@ -496,7 +509,6 @@ public class Database {
         return policyList;
     }
 
-
     /**
      * Retrieves a list of life policies from the database.
      * @return An ArrayList containing LifePolicy objects.
@@ -549,7 +561,6 @@ public class Database {
         }
         return policyList;
     }
-
     
     /**
      * Retrieves the medical conditions from the database.
@@ -581,7 +592,6 @@ public class Database {
         return medicalConditions;
     }
 
-   
     /**
      * Adds a new staff member to the database.
      * @param staff The Staff object representing the staff member to be added.
@@ -667,7 +677,7 @@ public class Database {
                 "'" + autoPolicy.getFrequency() + "', " +
                 autoPolicy.getYearlyPremium() + ", " +
                 "'" + autoPolicy.getMake() + "', " +
-                "'" + autoPolicy.getModel() + "', " +
+                "'" + autoPolicy.getModel().getName() + "', " +
                 autoPolicy.getYear() + ", " +
                 "'" + autoPolicy.getCurrentLicense() + "', " +
                 "'" + autoPolicy.hasAccidentHistory() + "', " +

@@ -7,9 +7,6 @@ import java.util.*;
 import javax.swing.*;
 
 public abstract class LookUpPage {
-    //System Page for repainting
-    SystemPage sp;
-    
     //Panel to add components too
     JPanel lookUpP;
     
@@ -35,9 +32,7 @@ public abstract class LookUpPage {
     int height = 25;
     int gap = 150;
     
-    public LookUpPage(SystemPage sp) {
-        this.sp = sp;
-        
+    public LookUpPage() {        
         //Create Panel
         lookUpP = new JPanel(null);
         lookUpP.setBackground(Color.WHITE);
@@ -72,6 +67,7 @@ public abstract class LookUpPage {
         idHeader = SystemPage.createLabel("ID", font, x, y, width, height);
         nameHeader = SystemPage.createLabel("FULL NAME", font, x+gap, y, width, height);
     }
+    
     private void createSearchId() {
         searchId = SystemPage.createTextField("Search by ID", x, y, width, height);
         searchButtonId = SystemPage.createButton("Search", x+=width, y, width/2, height-1);

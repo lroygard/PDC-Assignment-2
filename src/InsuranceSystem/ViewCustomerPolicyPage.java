@@ -6,10 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class ViewCustomerPolicyPage {
-    //SystemPage for access to system and repainting 
-    private SystemPage sp;
-    
+public class ViewCustomerPolicyPage {    
     //Panel components will be added to
     public JPanel viewCustomerPolicyP;
     
@@ -31,14 +28,10 @@ public class ViewCustomerPolicyPage {
     
     /**
      * Constructor for ViewCustomerPolicyPage
-     * @param sp the current system page
      */
-    public ViewCustomerPolicyPage(SystemPage sp) {
-        //Initialise variables
-        this.sp = sp;
-        
-        if (sp.insSys.currentCustomer != null) { 
-            this.policies = sp.insSys.currentCustomer.getPolicies();
+    public ViewCustomerPolicyPage() {        
+        if (InsuranceSystem.getInstance().currentCustomer != null) { 
+            this.policies = InsuranceSystem.getInstance().currentCustomer.getPolicies();
         }
         
         visiblePolicies = new ArrayList<>();
@@ -70,10 +63,11 @@ public class ViewCustomerPolicyPage {
     /**
      * Initialise the next and previous buttons
      */
-    private void intialiseButtons() {        
+    private void intialiseButtons() {   
+        
         //Create and set bounds
-        prev = SystemPage.createButton("Prev Page", x, y, width, height);
-        next = SystemPage.createButton("Next Page", x, y, width, height);
+        prev = SystemPage.createButton("Prev", 200, 535, width/2, height);
+        next = SystemPage.createButton("Next", 690, 535, width/2, height);
         
         //Add action listeners
         next.addActionListener(new ActionListener() {
@@ -174,17 +168,18 @@ public class ViewCustomerPolicyPage {
             String type = getType(policy);
 
             //Turn information into labels
-            JLabel idLabel = SystemPage.createLabel(policyId, x += width, y, width, height);
+            JLabel idLabel = SystemPage.createLabel(policyId, x, y, width, height);
             JLabel premiumLabel = SystemPage.createLabel(premium, x += width, y, width, height);
             JLabel typeLabel = SystemPage.createLabel(type, x += width, y, width, height);
-            JButton viewButton = SystemPage.createButton("View Policy", x + width, y, width, height);
+            JButton viewButton = SystemPage.createButton("View Policy", x + width-3, y+2, width-4, height-4);
 
             //Add an action listener if the user wants to view a policy
             viewButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     //Show appropriate policy
                     if (type.equals("Auto")) {
-                        
+                        ViewAutoPolicyPage vap = new ViewAutoPolicyPage(policy);
+                        SystemPage.getInstance().showPanel(vap.viewAutoPolicyP);
                     } else if (type.equals("Life")) {
                         
                     } else {
@@ -204,6 +199,9 @@ public class ViewCustomerPolicyPage {
 
             y += height;
         }
+        
+        viewCustomerPolicyP.repaint();
+        SystemPage.getInstance().repaint();
     }
         
     

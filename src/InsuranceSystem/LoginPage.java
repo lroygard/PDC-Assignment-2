@@ -9,8 +9,11 @@ import java.util.ArrayList;
 public class LoginPage extends JFrame {
     private final JPanel panel;
     private ArrayList<Staff> staff; 
-    
-    public LoginPage() {
+    private SystemPageObserver observer;
+
+    public LoginPage(SystemPageObserver observer) {
+        this.observer = observer;
+
         panel = new JPanel(null);
         JLabel usernameLabel = new JLabel("ID:");
         JLabel passwordLabel = new JLabel("Password:");
@@ -43,8 +46,7 @@ public class LoginPage extends JFrame {
                     }
                     
                     if (correct) {
-                        SystemPage sp = new SystemPage(loggedInStaff);
-                        sp.setVisible(true);
+                        observer.notifyPasswordCorrect(loggedInStaff);
                         dispose();
                     } else {
                         panel.add(wrongPassword);

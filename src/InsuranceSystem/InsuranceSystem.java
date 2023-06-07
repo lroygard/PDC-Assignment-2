@@ -13,10 +13,11 @@ public class InsuranceSystem {
     Staff currentStaff;
     Customer currentCustomer;
     
+    private static InsuranceSystem instance;
     
-    public InsuranceSystem() {
+    private InsuranceSystem() {
         //Initialise database to initialise tables
-        Database db = new Database();
+        Database db = Database.getInstance();
 
         //Get Arraylists from database
         this.staff = Database.getStaffList();
@@ -24,7 +25,14 @@ public class InsuranceSystem {
         this.policies = Database.getPolicyList();
 
         //Associate policies to customers
-        associatePolicies();
+        associatePolicies();    
+    }
+    
+    public static InsuranceSystem getInstance() {
+        if (instance == null) {
+            instance = new InsuranceSystem();
+        }
+        return instance;    
     }
 
     private void associatePolicies() {
