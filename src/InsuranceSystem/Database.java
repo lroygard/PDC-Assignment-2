@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class Database {
     
-    private static final DatabaseManager dbManager = new DatabaseManager();
+    private static final DatabaseManager dbManager = DatabaseManager.getInstance();
     private static final Connection conn = dbManager.getConnection();
     private static Statement statement;
     

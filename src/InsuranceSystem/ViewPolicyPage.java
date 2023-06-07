@@ -48,17 +48,9 @@ public abstract class ViewPolicyPage {
         }
     }
     
-    private void addPolicyInfo() {
-        //Get String value of information
-        String policyId = String.valueOf(policy.getPolicyId());
-        String customerId = String.valueOf(policy.getCustomerId());
-        String assetTotal = "$"+String.valueOf(policy.getAssetTotal());
-        String coverage = "$"+String.valueOf(policy.getCoverage());
-        String yearlyPremium = "$"+String.valueOf(policy.getYearlyPremium());
-        String paymentFrequency = policy.getFrequency().toString();
-        
+    private void addPolicyInfo() {        
         //Turn into array
-        String[] information = {policyId, customerId, assetTotal, coverage, yearlyPremium, paymentFrequency};
+        String[] information = policy.getPolicyStringArray();
         
         x = width*2+75;
         y = 200;

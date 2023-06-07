@@ -1,5 +1,7 @@
 package InsuranceSystem;
 
+import java.util.ArrayList;
+
 public abstract class Policy {
     
     public static final int CURRENTYEAR = 2023;
@@ -81,6 +83,20 @@ public abstract class Policy {
     
     public abstract double calculatePremium();   
     protected abstract int createId();
+    public abstract String[] getStringArray();
+    
+    public String[] getPolicyStringArray() {
+        String[] array = new String[6];
+
+        array[0] = (String.valueOf(this.policyId));
+        array[1] = (String.valueOf(this.customerId));
+        array[2] = ("$"+String.valueOf(this.assetTotal));
+        array[3] = ("$"+String.valueOf(this.coverage));
+        array[4] = ("$"+String.valueOf(this.yearlyPremium));
+        array[5] = (this.frequency.toString());
+        
+        return array;
+    }
     
     public static double checkCoverage(double coverage, double assetTotal) {
         if (coverage >= 1000 && coverage <= assetTotal) {
@@ -89,4 +105,6 @@ public abstract class Policy {
         
         return -1;
     }
+    
+    
 }

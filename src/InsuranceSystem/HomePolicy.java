@@ -1,5 +1,7 @@
 package InsuranceSystem;
 
+import java.util.ArrayList;
+
 public class HomePolicy extends Policy{
     String address;
     int yearBuilt;
@@ -104,6 +106,21 @@ public class HomePolicy extends Policy{
 
     public void setConstructionQuality(Quality constructionQuality) {
         this.constructionQuality = constructionQuality;
+    }
+
+    @Override
+    public String[] getStringArray() {
+        String[] array = new String[7];
+
+        array[0] = this.address;
+        array[1] = String.valueOf(this.yearBuilt);
+        array[2] = String.valueOf(this.squareMeters);
+        array[3] = String.valueOf(this.noBuildings);
+        array[4] = this.wallMaterial.toString();
+        array[5] = this.roofMaterial.toString();
+        array[6] = this.constructionQuality.toString();
+
+        return array;   
     }
     
     public enum WallMaterial {

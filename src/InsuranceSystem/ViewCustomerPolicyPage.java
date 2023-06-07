@@ -181,9 +181,11 @@ public class ViewCustomerPolicyPage {
                         ViewAutoPolicyPage vap = new ViewAutoPolicyPage(policy);
                         SystemPage.getInstance().showPanel(vap.viewAutoPolicyP);
                     } else if (type.equals("Life")) {
-                        
+                        ViewLifePolicyPage vlp = new ViewLifePolicyPage(policy);
+                        SystemPage.getInstance().showPanel(vlp.viewLifePolicyp);
                     } else {
-                        
+                        ViewHomePolicyPage vhp = new ViewHomePolicyPage(policy);
+                        SystemPage.getInstance().showPanel(vhp.viewHomePolicyP);
                     }
             }}); 
 

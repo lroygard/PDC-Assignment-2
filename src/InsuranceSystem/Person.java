@@ -39,18 +39,6 @@ public abstract class Person {
         return birthYear;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    
-    public void setBirthYear(int birthYear) {
-        this.birthYear = birthYear;
-    }
-
     protected static String checkName(String name) {
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
@@ -62,6 +50,16 @@ public abstract class Person {
         return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
     
+    public String[] getPersonStringArray() {
+        String[] array = new String[2];
+        
+        array[0] = String.valueOf(this.id);
+        array[1] = this.firstName+" "+this.lastName;
+        array[2] = String.valueOf(SystemPage.CURRENTYEAR - this.birthYear);
+        
+        return array;
+    }
     
     public abstract int createId();
+    public abstract String[] getStringArray();
 }

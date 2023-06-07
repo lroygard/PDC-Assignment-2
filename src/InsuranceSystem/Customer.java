@@ -87,4 +87,15 @@ public class Customer extends Person {
     public int createId() {
         return Database.getNextId("CUSTOMER");
     }
+    
+    @Override
+    public String[] getStringArray() {
+        String[] array = new String[3];
+        
+        array[0] = this.phoneNumber;
+        array[1] = this.email;
+        array[2] = String.valueOf(this.policies.size());
+        
+        return array;
+    }
 }

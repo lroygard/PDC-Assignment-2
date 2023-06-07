@@ -51,27 +51,6 @@ public class LifePolicy extends Policy {
     public boolean isSmoker() {
         return smoker;
     }
-
-    public void addMedicalHistory(MedicalCondition medicalCondition) {
-        this.medicalHistory.add(medicalCondition);
-    }
-
-    public void setHobbyRisk(Risk hobbyRisk) {
-        this.hobbyRisk = hobbyRisk;
-    }
-
-    public void setOccupationRisk(Risk occupationRisk) {
-        this.occupationRisk = occupationRisk;
-    }
-
-    public void setGym(boolean gym) {
-        this.gym = gym;
-    }
-
-    public void setSmoker(boolean smoker) {
-        this.smoker = smoker;
-    }
-    
     
     public static enum Risk {
         High, 
@@ -107,7 +86,7 @@ public class LifePolicy extends Policy {
         return dummyLife.calculatePremium();
     }
     
-    public ArrayList<MedicalCondition> stringArrayToMedicalCondition(ArrayList<String> conditions) {
+    public static ArrayList<MedicalCondition> stringArrayToMedicalCondition(ArrayList<String> conditions) {
         ArrayList<MedicalCondition> newConditions = new ArrayList<>();
         
         for (int i = 0; i < conditions.size(); i++) {
@@ -116,6 +95,17 @@ public class LifePolicy extends Policy {
         }
         
         return newConditions;
+    }
+    
+    public static String[] medicalConditionArrayToString(ArrayList<MedicalCondition> conditions) {
+       String[] array = new String[conditions.size()];
+        
+        for (int i = 0; i < conditions.size(); i++) {
+            String condition = conditions.toString().replace("_", " ");
+            array[i] = condition;
+        }
+        
+        return array;
     }
     
     @Override
@@ -187,5 +177,23 @@ public class LifePolicy extends Policy {
     @Override
     protected int createId() {
         return Database.getNextId("LIFEPOLICY");
+    }
+    
+    @Override
+    public String[] getStringArray() {
+        
+        String[] array = new String[4+this.medicalHistory.size()];
+
+        array[0] = this.hobbyRisk.toString();
+        array[1] = this.getHobbyRisk().toString();
+        array[2] = String.valueOf(this.gym).toUpperCase();
+        array[3] = String.valueOf(this.smoker).toUpperCase();
+
+        String[] medicalConditions = LifePolicy.medicalConditionArrayToString(this.medicalHistory);
+        for (int i = 4; i < array.length; i++) {
+            array[i] = medicalConditions[i-4];
+        }
+
+        return array;
     }
 }

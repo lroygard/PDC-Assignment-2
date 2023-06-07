@@ -1,18 +1,17 @@
 package InsuranceSystem;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class ViewHomePolicyPage extends ViewPolicyPage {
+public class ViewLifePolicyPage extends ViewPolicyPage{
     
-    JPanel viewHomePolicyP;
-    HomePolicy homePolicy;
+    public JPanel viewLifePolicyp;
     
-    public ViewHomePolicyPage(Policy policy) {
+    public ViewLifePolicyPage(Policy policy) {
         super(policy);
         
-        viewHomePolicyP = viewPolicyP;
-
-        homePolicy = (HomePolicy) policy;
+        viewLifePolicyp = viewPolicyP;
+                
         addLabels();
         addInfo();
     }
@@ -22,12 +21,12 @@ public class ViewHomePolicyPage extends ViewPolicyPage {
         x = width*3+75;
         y = 200;
         
-        String[] labelNames = {"Address:", "Year Built:", "Levels:", "Square Meters:", "No. Buildings:", "Wall Material:", "Roof Material", "Quality"};
+        String[] labelNames = {"Hobby Risk:", "Occupation Risk:", "Gym:", "Smoker:", "Conditions:"};
         
         for (int i = 0; i < labelNames.length; i++) {
             y += 50;
             JLabel label = SystemPage.createLabel(labelNames[i],fontBold,x,y,width,height);
-            viewHomePolicyP.add(label);
+            viewLifePolicyp.add(label);
         }
     }
 
@@ -37,11 +36,18 @@ public class ViewHomePolicyPage extends ViewPolicyPage {
         y = 200;
         
         String[] information = policy.getStringArray();
-                
+        
         for (int i = 0; i < information.length; i++) {
             y += 50;
             JLabel label = SystemPage.createLabel(information[i],font,x,y,width,height);
-            viewHomePolicyP.add(label);
-        }        
+            
+            if (i > 4) {
+               y-=25; 
+            }
+            
+            viewLifePolicyp.add(label);
+        }
     }
+            
+    
 }

@@ -141,6 +141,20 @@ public class AutoPolicy extends Policy {
     public boolean isCommercialUse() {
         return commercialUse;
     }
+
+    @Override
+    public String[] getStringArray() {
+        String[] array = new String[6];
+
+        array[0] = this.make.toString();
+        array[1] = this.model.getName();
+        array[2] = String.valueOf(this.year);
+        array[3] = this.currentLicense.toString();
+        array[4] = String.valueOf(this.accidentHistory).toUpperCase();
+        array[5] = String.valueOf(this.commercialUse).toUpperCase();
+
+        return array;
+    }
     
     /**
      * Enum representing license types

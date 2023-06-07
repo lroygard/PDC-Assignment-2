@@ -35,22 +35,6 @@ public class Staff extends Person{
     public boolean isManager() {
         return manager;
     }
-
-    public void setExtension(int extension) {
-        this.extension = extension;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setManager(boolean manager) {
-        this.manager = manager;
-    }
     
     @Override
     public int createId() {
@@ -94,14 +78,14 @@ public class Staff extends Person{
         return null;
     }
     
-    private static boolean stringContains(String string, String test) {
-        for (int i = 0; i < string.length(); i++) {
-            for (int j = 0; j < test.length(); j++) {
-                if (string.charAt(i) == test.charAt(j)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    @Override
+    public String[] getStringArray() {
+        String[] array = new String[3];
+        
+        array[0] = String.valueOf(this.extension);
+        array[1] = this.email;
+        array[2] = String.valueOf(this.manager);
+        
+        return array;
     }
 }
