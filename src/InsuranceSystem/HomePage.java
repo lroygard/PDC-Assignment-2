@@ -72,6 +72,12 @@ public class HomePage {
         custLookUp = SystemPage.createButton("Look up Customer", x, y+=75, width, height);
         custNew = SystemPage.createButton("Create a New Customer", x, y+75, width, height);
         
+        custDetails.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ViewCustomerPage vcp = new ViewCustomerPage(InsuranceSystem.getInstance().currentCustomer);
+                SystemPage.getInstance().showPanel(vcp.viewCustomerP);
+        }});
+        
         custNew.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CreateCustomerPage ccp = new CreateCustomerPage();
@@ -130,6 +136,12 @@ public class HomePage {
         y = 275;
 
         staffDetails = SystemPage.createButton("View/Change your details", x, y, width, height);
+        
+        staffDetails.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ViewStaffPage vsp = new ViewStaffPage(InsuranceSystem.getInstance().currentStaff);
+                SystemPage.getInstance().showPanel(vsp.viewStaffP);
+        }}); 
         
         if (InsuranceSystem.getInstance().currentStaff.isManager()) {
             createManagerOptions();

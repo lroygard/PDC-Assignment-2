@@ -18,8 +18,8 @@ public class ViewLifePolicyPage extends ViewPolicyPage{
 
     @Override
     protected void addLabels() {
-        x = width*3+75;
-        y = 200;
+        x = width*3+50;
+        y = 175;
         
         String[] labelNames = {"Hobby Risk:", "Occupation Risk:", "Gym:", "Smoker:", "Conditions:"};
         
@@ -32,20 +32,23 @@ public class ViewLifePolicyPage extends ViewPolicyPage{
 
     @Override
     protected void addInfo() {
-        x = width*4+75;
-        y = 200;
+        x = width*4+50;
+        y = 175;
         
         String[] information = policy.getStringArray();
         
         for (int i = 0; i < information.length; i++) {
-            y += 50;
-            JLabel label = SystemPage.createLabel(information[i],font,x,y,width,height);
-            
-            if (i > 4) {
-               y-=25; 
+            if (i <= 4) {
+                y += 50;
+            } else {
+                y += height;
             }
             
+            JLabel label = SystemPage.createLabel(information[i],font,x,y,width*2,height);
+            
             viewLifePolicyp.add(label);
+            
+            //if (i > )
         }
     }
             

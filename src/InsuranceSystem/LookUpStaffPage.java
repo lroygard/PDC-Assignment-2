@@ -146,18 +146,26 @@ public class LookUpStaffPage extends LookUpPage {
             //turn information into labels
             JLabel idLabel = SystemPage.createLabel(String.valueOf(id), x, y, width, height);
             JLabel fullNameLabel = SystemPage.createLabel(fullName, x+gap, y, width, height);
-            JLabel extensionLabel = SystemPage.createLabel(String.valueOf(extension), x+gap*2, y, width, height);
-            JLabel managerLabel = SystemPage.createLabel(String.valueOf(manager).toUpperCase(), x+gap*3-3, y+2, gap-4, height-4);
+            JLabel managerLabel = SystemPage.createLabel(String.valueOf(manager).toUpperCase(), x+gap*2, y, width, height);
+      
+            JButton viewStaffButton = SystemPage.createButton("View", x+gap*3-3, y+2, gap-4, height-4);
 
+            viewStaffButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    ViewStaffPage vsp = new ViewStaffPage(staff);
+                    SystemPage.getInstance().showPanel(vsp.viewStaffP);
+            }}); 
+            
+            
             //Add labels to panel and components
             lookUpStaffP.add(idLabel);
             lookUpStaffP.add(fullNameLabel);
-            lookUpStaffP.add(extensionLabel);
+            lookUpStaffP.add(viewStaffButton);
             lookUpStaffP.add(managerLabel);
 
             resultsComponents.add(idLabel);
             resultsComponents.add(fullNameLabel);
-            resultsComponents.add(extensionLabel);
+            resultsComponents.add(viewStaffButton);
             resultsComponents.add(managerLabel);
 
             y += 25;

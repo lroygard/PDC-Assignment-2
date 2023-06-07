@@ -51,7 +51,7 @@ public abstract class Person {
     }
     
     public String[] getPersonStringArray() {
-        String[] array = new String[2];
+        String[] array = new String[3];
         
         array[0] = String.valueOf(this.id);
         array[1] = this.firstName+" "+this.lastName;

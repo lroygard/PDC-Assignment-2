@@ -33,11 +33,11 @@ public abstract class ViewPersonPage {
         x = width*2;
         y = 200;
         
-        String[] labelNames = {"ID:", "Name:", "Age"};
+        String[] labelNames = {"ID:", "Name:", "Age:"};
         
         for (int i = 0; i < labelNames.length; i++) {
             y += 50;
-            JLabel label = SystemPage.createLabel(labelNames[i],fontBold,x,y,width,height);
+            JLabel label = SystemPage.createLabel(labelNames[i],fontBold,x,y,width*2,height);
             viewPersonP.add(label);
         }
     }
@@ -46,10 +46,11 @@ public abstract class ViewPersonPage {
         String[] information = person.getPersonStringArray();
         
         x = width*3;
-        
+        y = 200;
+
         for (int i = 0; i < information.length; i++) {
             y += 50;
-            JLabel label = SystemPage.createLabel(information[i],font,x,y,width,height);
+            JLabel label = SystemPage.createLabel(information[i],font,x,y,width*2,height);
             viewPersonP.add(label);
         }
     }

@@ -19,8 +19,8 @@ public class ViewAutoPolicyPage extends ViewPolicyPage {
 
     @Override
     protected void addLabels() {
-        x = width*3+75;
-        y = 200;
+        x = width*3+50;
+        y = 175;
         
         String[] labelNames = {"Make:", "Model:", "Year:", "License:", "Accident History:", "Commercial Use:"};
         
@@ -33,8 +33,8 @@ public class ViewAutoPolicyPage extends ViewPolicyPage {
 
     @Override
     protected void addInfo() {
-        x = width*4+75;
-        y = 200;
+        x = width*4+50;
+        y = 175;
 
         String[] information = policy.getStringArray();
                 

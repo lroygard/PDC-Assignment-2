@@ -36,8 +36,8 @@ public abstract class ViewPolicyPage {
 
     
     private void addPolicyLabels() {
-        x = width+75;
-        y = 200;
+        x = width+50;
+        y = 175;
         
         String[] labelNames = {"Policy ID:", "Customer ID:", "Total Asset $:", "Coverage:", "Premium:", "Payment Frq.:"};
         
@@ -52,8 +52,8 @@ public abstract class ViewPolicyPage {
         //Turn into array
         String[] information = policy.getPolicyStringArray();
         
-        x = width*2+75;
-        y = 200;
+        x = width*2+50;
+        y = 175;
         
         for (int i = 0; i < information.length; i++) {
             y += 50;

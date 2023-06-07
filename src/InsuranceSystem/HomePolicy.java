@@ -76,49 +76,18 @@ public class HomePolicy extends Policy{
         return constructionQuality;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setYearBuilt(int yearBuilt) {
-        this.yearBuilt = yearBuilt;
-    }
-
-    public void setLevels(int levels) {
-        this.levels = levels;
-    }
-
-    public void setSquareMeters(int squareMeters) {
-        this.squareMeters = squareMeters;
-    }
-
-    public void setNoBuildings(int noBuildings) {
-        this.noBuildings = noBuildings;
-    }
-
-    public void setWallMaterial(WallMaterial wallMaterial) {
-        this.wallMaterial = wallMaterial;
-    }
-
-    public void setRoofMaterial(RoofMaterial roofMaterial) {
-        this.roofMaterial = roofMaterial;
-    }
-
-    public void setConstructionQuality(Quality constructionQuality) {
-        this.constructionQuality = constructionQuality;
-    }
-
     @Override
     public String[] getStringArray() {
-        String[] array = new String[7];
+        String[] array = new String[8];
 
         array[0] = this.address;
         array[1] = String.valueOf(this.yearBuilt);
         array[2] = String.valueOf(this.squareMeters);
         array[3] = String.valueOf(this.noBuildings);
-        array[4] = this.wallMaterial.toString();
-        array[5] = this.roofMaterial.toString();
-        array[6] = this.constructionQuality.toString();
+        array[4] = String.valueOf(this.squareMeters);
+        array[5] = this.wallMaterial.toString().replace("_", " ");
+        array[6] = this.roofMaterial.toString().replace("_", " ");
+        array[7] = this.constructionQuality.toString();
 
         return array;   
     }

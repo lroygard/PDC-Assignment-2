@@ -98,11 +98,17 @@ public class LifePolicy extends Policy {
     }
     
     public static String[] medicalConditionArrayToString(ArrayList<MedicalCondition> conditions) {
-       String[] array = new String[conditions.size()];
+        String[] array;
         
-        for (int i = 0; i < conditions.size(); i++) {
-            String condition = conditions.toString().replace("_", " ");
-            array[i] = condition;
+        if (conditions.isEmpty()) {
+            array = new String[]{"None"};
+        } else {
+            array = new String[conditions.size()];
+
+            for (int i = 0; i < conditions.size(); i++) {
+                String condition = conditions.get(i).toString().replace("_", " ");
+                array[i] = condition;
+            }
         }
         
         return array;
