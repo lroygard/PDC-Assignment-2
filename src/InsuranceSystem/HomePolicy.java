@@ -148,7 +148,7 @@ public class HomePolicy extends Policy{
     public double calculatePremium() {
         int age = SystemPage.CURRENTYEAR - this.getYearBuilt();
         
-        double premium = this.getCoverage()/100;
+        double premium = this.getCoverage()/200;
         switch (this.getWallMaterial()) {
             case Brick_Veneer:
             case Double_Brick:

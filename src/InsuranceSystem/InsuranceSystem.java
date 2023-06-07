@@ -15,10 +15,15 @@ public class InsuranceSystem {
     
     
     public InsuranceSystem() {
+        //Initialise database to initialise tables
+        Database db = new Database();
+
+        //Get Arraylists from database
         this.staff = Database.getStaffList();
         this.customers = Database.getCustomerList();
         this.policies = Database.getPolicyList();
 
+        //Associate policies to customers
         associatePolicies();
     }
 
@@ -57,7 +62,8 @@ public class InsuranceSystem {
             Customer newCustomer = new Customer(id, newFirstName, newLastName, birthYear, newPhoneNumber, newEmail);
             this.customers.add(newCustomer);
             Database.addCustomer(newCustomer);
-            errors.add(SystemPage.createLabel("Customer successfully created", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
+            errors.add(SystemPage.createLabel("Customer successfully created", new Font(null, Font.PLAIN, 14), Color.BLUE, 500, 390, 300, 25)); 
+            errors.add(SystemPage.createLabel(newCustomer.getFullName()+ "'s id:" + id, new Font(null, Font.PLAIN, 14), Color.BLUE, 500, 465, 300, 25)); 
         }
                 
         return errors;
@@ -97,24 +103,12 @@ public class InsuranceSystem {
             Staff newStaff = new Staff(id, newFirstName, newLastName, birthYear, newExtension, email, newPassword, manager);
             this.staff.add(newStaff);
             Database.addStaff(newStaff);
-            errors.add(SystemPage.createLabel("Staff member successfully created", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
+            errors.add(SystemPage.createLabel("Staff member successfully created", new Font(null, Font.PLAIN, 14), Color.BLUE, 500, 440, 300, 25)); 
+            errors.add(SystemPage.createLabel(newStaff.getFullName()+ "'s id:" + id, new Font(null, Font.PLAIN, 14), Color.BLUE, 500, 465, 300, 25)); 
         }
         
         return errors;
     }
-    
-    /*public ArrayList<JLabel> createAuto(double assetTotal, String coverage, String paymentFrequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
-        boolean check = checkCoverage(coverage, assetTotal);
-        
-        if (check) {
-            int id = Database.getNextId("AUTOPOLICY");
-            double yearlyPremium = AutoPolicy.calculatePremium(Integer.parseInt(coverage), paymentFrequency, make,model,year,currentLicense,accidentHistory,commercialUse);
-            AutoPolicy newPolicy = new AutoPolicy(id, this.currentCustomer.getId(), assetTotal, Integer.parseInt(coverage), yearlyPremium, paymentFrequency, make, model, year, currentLicense, accidentHistory, commercialUse);
-            errors.add(SystemPage.createLabel("Policy added to the current customer", new Font(null, Font.PLAIN, 14), Color.GREEN, 500, 390, 300, 25)); 
-        }
-        
-        return errors;
-    }*/
     
     public static boolean checkCoverage(String coverage, double assetTotal) {
         if(assetTotal == 0) {
@@ -124,10 +118,13 @@ public class InsuranceSystem {
         double newCoverage;
         try {
             newCoverage = Policy.checkCoverage(Double.parseDouble(coverage), assetTotal);
-            return true;
+            if (newCoverage >= 1000 && newCoverage <= assetTotal) {
+                return true;
+            }
         } catch(NumberFormatException e) {
-            return false;
+            
         }
+        return false;
     }
     
     public static ArrayList<JLabel> checkAutoAndLife(String coverage, double assetTotal) {
@@ -200,6 +197,32 @@ public class InsuranceSystem {
         return foundCustomer;
     }
     
+    public ArrayList<Staff> searchStaffName(String name) {
+        ArrayList<Staff> foundStaff = new ArrayList<>();
+        name = name.toLowerCase();
+        for (Staff staffMember: staff) {
+            String staffName = staffMember.getFullName().toLowerCase();
+            if (staffName.contains(name)) {
+                foundStaff.add(staffMember);
+            }
+        }
+        
+        return foundStaff;
+    }
+    
+    public ArrayList<Staff> searchStaffId(String id) {
+        ArrayList<Staff> foundStaff = new ArrayList<>();
+        
+        for (Staff staffMember: staff) {
+            String staffID = String.valueOf(staffMember.getId());
+            if (staffID.contains(id)) {
+                foundStaff.add(staffMember);
+            }
+        }
+        
+        return foundStaff;
+    }
+    
     public static boolean searchCheckId(String id) {
         try {
             int intId = Integer.parseInt(id);
@@ -212,4 +235,6 @@ public class InsuranceSystem {
         
         return false;
     }
+    
+    
 }

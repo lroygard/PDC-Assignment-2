@@ -13,8 +13,28 @@ public class AutoPolicy extends Policy {
     private boolean accidentHistory;
     private boolean commercialUse;
 
+    /**
+     * Default Constructor
+     */
     public AutoPolicy() {}
 
+    /**
+     * Constructor for the AutoPolicy class.
+     * This constructor creates an instance of AutoPolicy with the provided parameters
+     *
+     * @param policyId The ID of the policy.
+     * @param customerId The ID of the customer associated with the policy
+     * @param assetTotal The total value of the insured assets
+     * @param coverage The coverage amount of the policy
+     * @param yearlyPremium The yearly premium amount of the policy
+     * @param frequency The payment frequency for the policy
+     * @param make The brand of the car insured by the policy
+     * @param model  The model of the car insured by the policy
+     * @param year The year the car insured by the policy was made
+     * @param currentLicense The type of license held by the policyholder
+     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history
+     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes
+     */
     public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage, 
             double yearlyPremium, PaymentFrequency frequency, CarBrand make, CarModel model, 
             int year, LicenseType currentLicense, boolean accidentHistory, boolean commercialUse) {
@@ -27,6 +47,24 @@ public class AutoPolicy extends Policy {
         this.commercialUse = commercialUse;
     }
     
+    
+    /**
+     * Constructor for the AutoPolicy class.
+     * This constructor creates an instance of AutoPolicy with the provided parameters
+     *
+     * @param policyId The ID of the policy.
+     * @param customerId The ID of the customer associated with the policy
+     * @param assetTotal The total value of the insured assets
+     * @param coverage The coverage amount of the policy
+     * @param yearlyPremium The yearly premium amount of the policy
+     * @param frequency The payment frequency for the policy
+     * @param make The brand of the car insured by the policy
+     * @param model  The model of the car insured by the policy
+     * @param year The year the car insured by the policy was made
+     * @param currentLicense The type of license held by the policyholder
+     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history
+     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes
+     */
     public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage, 
             double yearlyPremium, String frequency, String make, String model, 
             int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
@@ -39,6 +77,13 @@ public class AutoPolicy extends Policy {
         this.commercialUse = commercialUse;
     }
     
+    /**
+     * Converts a string of a car model to the corresponding CarModel enum value
+     *
+     * @param modelName The string representation of the car model
+     * @param make  The brand of the car insured by the policy as a CarBrand enum
+     * @return The CarModel enum value corresponding to the input string
+     */
     public CarModel stringToCarModel(String modelName, CarBrand make) {
         ArrayList<CarModel> carModels = CARMODELS.get(make);
         for (CarModel model : carModels) {
@@ -49,60 +94,66 @@ public class AutoPolicy extends Policy {
         return null; 
     }
 
+    /**
+     * Returns the make of the car
+     * @return the make of the car
+     */
     public CarBrand getMake() {
         return make;
     }
 
+    /**
+     * Returns the model of the car
+     * @return the model of the car
+     */
     public CarModel getModel() {
         return model;
     }
 
+    /**
+     * Returns the year of the car
+     * @return the year of the car
+     */
     public int getYear() {
         return year;
     }
 
+    /**
+     * Returns the license type
+     * @return the license type
+     */
     public LicenseType getCurrentLicense() {
         return currentLicense;
     }
 
+    /**
+     * Returns whether the user has accident history
+     * @return whether the use has accident history
+     */
     public boolean hasAccidentHistory() {
         return accidentHistory;
     }
 
+    /**
+     * Returns if the car is being used commercially
+     * @return if the car is being used commercially
+     */
     public boolean isCommercialUse() {
         return commercialUse;
     }
-
-    public void setMake(CarBrand make) {
-        this.make = make;
-    }
-
-    public void setModel(CarModel model) {
-        this.model = model;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public void setCurrentLicense(LicenseType currentLicense) {
-        this.currentLicense = currentLicense;
-    }
-
-    public void setAccidentHistory(boolean accidentHistory) {
-        this.accidentHistory = accidentHistory;
-    }
-
-    public void setCommercialUse(boolean commercialUse) {
-        this.commercialUse = commercialUse;
-    }
     
+    /**
+     * Enum representing license types
+     */
     public static enum LicenseType {
         Learners,
         Restricted,
         Full,
     }
     
+    /**
+     * Enum representing car brands
+     */
     public static enum CarBrand {
         Audi,
         Bmw,
@@ -126,13 +177,21 @@ public class AutoPolicy extends Policy {
         Other
     }
 
+    /**
+     * Calculates the premium of the auto policy
+     * @return the premium of the auto policy
+     */
     @Override
     public double calculatePremium() {
+        //Calculate how old the car is
         int age = Policy.CURRENTYEAR - this.getYear();
+        //Calculate the base premium based on the coverage
         double premium = this.getCoverage()/4;
         
+        //Adjust the premium based on the risk factor of the car model
         premium *= ((this.getModel().getRisk()/10)+1);
 
+        //Adjust the premium based on the age of the car
         if (age <= 5) {
             premium *= 1.05;
         } else if (age <= 10) {
@@ -141,21 +200,24 @@ public class AutoPolicy extends Policy {
             premium *= 1.15;
         }
 
+        //Adjust the premium based on license type
         if (this.getCurrentLicense() == LicenseType.Learners) {
             premium *= 1.1;
         } else if (this.getCurrentLicense() == LicenseType.Restricted) {
             premium *= 1.05;
         }
 
+        //Adjust the premium based on accident history
         if (this.hasAccidentHistory()) {
             premium *= 1.2;
         }
 
+        //Adjust the premium based on commerical use
         if (this.isCommercialUse()) {
             premium *= 1.1;
         }
 
-        //Base premium rate
+        //Base premium rate 
         if (premium < 1000) {
             premium = 1000;
         }
@@ -163,19 +225,38 @@ public class AutoPolicy extends Policy {
         return premium;
     }
     
+    /**
+     * Calculates the premium of an incomplete auto policy
+     * @param coverage The coverage amount of the policy.
+     * @param frequency The payment frequency for the policy.
+     * @param make The brand of the car insured by the policy.
+     * @param model The model of the car insured by the policy.
+     * @param year  The year of the car insured by the policy.
+     * @param currentLicense The type of license held by the policyholder.
+     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history.
+     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes.
+     * @return the calculated premium
+     */
     public static double calculatePremium(double coverage, String frequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
         AutoPolicy dummyAP = new AutoPolicy(-1, -1, -1, coverage, -1, frequency, make, model, year, currentLicense, accidentHistory, commercialUse);
         return dummyAP.calculatePremium();
     }
 
 
+    /**
+     * Create a new Auto Policy id
+     * @return a new Auto Policy id
+     */
     @Override
-    protected int createId() {
+    public int createId() {
         return Database.getNextId("AUTOPOLICY");
     }
 
-    
-    public static HashMap<CarBrand, ArrayList<CarModel>> CreateCarModels() {
+    /**
+     * Creates a HashMap of CarBrand and corresponding ArrayList of CarModel.
+     * @return The HashMap containing CarBrand and CarModel mappings.
+     */
+    private static HashMap<CarBrand, ArrayList<CarModel>> CreateCarModels() {
         HashMap<CarBrand, ArrayList<CarModel>> newCarModels = new HashMap<>();
         
         ArrayList<CarModel> toyota = new ArrayList<>();

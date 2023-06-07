@@ -9,20 +9,23 @@ public class SystemPage extends JFrame {
     public static final int CURRENTYEAR = 2023;
     public final InsuranceSystem insSys = new InsuranceSystem();
     
-    private HomePage homePage = new HomePage(this);
+    private HomePage homePage;
     private JPanel currentPanel;
     
     //Components on background
     JLabel logo;
     JButton backButton;
+    JLabel customerLabel;
+    JLabel customerInfo;
       
     public SystemPage(Staff staff) {
         insSys.currentStaff = staff;
-        insSys.currentCustomer = new Customer(1111,"Bob","Smith",2000,"(021) 215 0603", "bobsmith@gmail.com");
+        homePage = new HomePage(this);
 
         createLogo();
         createStaffVisual();
         createBackButton();
+        createCustomerVisual();
               
         setTitle("Insurance System Tool");
         setSize(1000, 750);
@@ -35,7 +38,7 @@ public class SystemPage extends JFrame {
         
     public void createLogo() {
         logo = new JLabel();
-        logo.setBounds(0,-15,250,175);
+        logo.setBounds(0,10,250,175);
         
         //Get Logo and resive it
         ImageIcon originalIcon = new ImageIcon("./resources/logo.png");
@@ -48,7 +51,7 @@ public class SystemPage extends JFrame {
     }
     
     public void createBackButton() {
-        backButton = createButton("Show HomePage", Color.WHITE, 390, 30, 200, 50);
+        backButton = createButton("Show HomePage", Color.WHITE, 390, 55, 200, 50);
         add(backButton);
         
         //When back button is pressed, restore home page
@@ -61,20 +64,53 @@ public class SystemPage extends JFrame {
     
     private void createStaffVisual() {
         int x = 700;
-        int y = 35;
+        int y = 40;
         int width = 200;
         int height = 15;
         Font font = new Font("Calibri", Font.BOLD, 15);
+        Font fontPlain = new Font("Calibri", Font.PLAIN, 15);
         
         JLabel userInfo = createLabel("Logged in as: ", font, x, y+=20, width, height);
-        JLabel user = createLabel(insSys.currentStaff.getFullName(), font, x, y+=20, width, height);
-        JLabel managerInfo = createLabel("Manager Permissions: "+Boolean.toString(insSys.currentStaff.isManager()), font, x, y+=20, width, height);
+        JLabel user = createLabel(insSys.currentStaff.getFullName(), fontPlain, x+width-100, y, width, height);
+        JLabel managerInfo = createLabel("Manager Permissions: "+Boolean.toString(insSys.currentStaff.isManager()).toUpperCase(), font, x, y+20, width, height);
 
         add(user);
         add(userInfo);
         add(managerInfo);
     }
 
+    private void createCustomerVisual() {
+        int x = 700;
+        int y = 115;
+        int width = 200;
+        int height = 15;
+        
+        Font font = new Font("Calibri", Font.BOLD, 15);
+        Font fontPlain = new Font("Calibri", Font.PLAIN, 15);
+        
+        customerLabel = createLabel("Current Customer Selected: ", font, x, y, width, height);
+        customerInfo = createLabel("", fontPlain, x+2, y+15, width, height);
+        
+        Customer customer = insSys.currentCustomer;
+        
+        updateCustomerVisual(customer);
+        
+        add(customerLabel);
+        add(customerInfo);
+    }
+            
+    public void updateCustomerVisual(Customer customer) {
+        if (customer == null) {
+            customerInfo.setText("None Selected");
+        } else {
+            int id = customer.getId();
+            String fullName = customer.getFullName();
+            
+            customerInfo.setText(id + ": " + fullName);
+        }
+        repaint();
+    }        
+    
     //TODO own class
     private void viewCustomer() {
         //Create Panel

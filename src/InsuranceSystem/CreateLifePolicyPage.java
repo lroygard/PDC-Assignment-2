@@ -150,7 +150,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
     
     public double calculateAssetTotal() {
         //pre-set asset total
-        return 50000;
+        return 500000;
     }
     
     @Override
@@ -227,29 +227,42 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
         boolean valid = updatePremium();
         
         if (valid == true) {
-            int id = Database.getNextId("LIFEPOLICY");
-            int customerId = sp.insSys.currentCustomer.getId();
-            
-            double newAssetTotal = Integer.valueOf(assetTotal.getText());
-            double newCoverage = Double.valueOf(coverage.getText());
-            double newYearlyPremium = Double.valueOf(yearlyPremium.getText());
-            String newFrequency = frequency.getSelectedItem().toString();
-            
-            String newHobbyRisk = hobbyRisk.getSelectedItem().toString();
-            String newOccupationRisk = occupationRisk.getSelectedItem().toString();
-            boolean newGym = Boolean.valueOf(gym.getSelectedItem().toString());
-            boolean newSmoker = Boolean.valueOf(smoker.getSelectedItem().toString());
-            ArrayList<String> selectedConditions = getSelectedConditions();
-            
-            //Create and add policy to database
-            LifePolicy newPolicy = new LifePolicy(id, customerId, newAssetTotal, 
-                    newCoverage, newYearlyPremium, newFrequency, selectedConditions, 
-                    newHobbyRisk, newOccupationRisk, newGym, newSmoker);
-            Database.addPolicy(newPolicy);
-            sp.insSys.currentCustomer.addPolicy(newPolicy);
+            if (sp.insSys.currentCustomer != null) {
+                int id = Database.getNextId("LIFEPOLICY");
+                int customerId = sp.insSys.currentCustomer.getId();
+
+                double newAssetTotal = Double.valueOf(assetTotal.getText().replace("$", ""));
+                double newCoverage = Double.valueOf(coverage.getText());
+                double newYearlyPremium = Double.valueOf(yearlyPremium.getText().replace("$", ""));
+                String newFrequency = frequency.getSelectedItem().toString();
+
+                String newHobbyRisk = hobbyRisk.getSelectedItem().toString();
+                String newOccupationRisk = occupationRisk.getSelectedItem().toString();
+                boolean newGym = Boolean.valueOf(gym.getSelectedItem().toString());
+                boolean newSmoker = Boolean.valueOf(smoker.getSelectedItem().toString());
+                ArrayList<String> selectedConditions = getSelectedConditions();
+
+                //Create and add policy to database
+                LifePolicy newPolicy = new LifePolicy(id, customerId, newAssetTotal, 
+                        newCoverage, newYearlyPremium, newFrequency, selectedConditions, 
+                        newHobbyRisk, newOccupationRisk, newGym, newSmoker);
+                Database.addPolicy(newPolicy);
+                sp.insSys.currentCustomer.addPolicy(newPolicy);
+                JLabel label = SystemPage.createLabel("Policy Successfully Created", Color.BLUE, 575, 525, 300, height);
+                JLabel label2 = SystemPage.createLabel("Life Policy ID:"+id, Color.BLUE, 575, 550, 300, height);
+                    currentErrorLabels.add(label);
+                    currentErrorLabels.add(label2);
+                    createLifeP.add(label);
+                    createLifeP.add(label2);
+                }
+            else {
+                JLabel errorLabel = SystemPage.createLabel("Can't create Policy: no current customer", 575, 525, 300, height);
+                currentErrorLabels.add(errorLabel);
+                createLifeP.add(errorLabel);
+            }
         }
         else {
-            JLabel errorLabel = SystemPage.createLabel("Can't create Policy due to Invalid Inputs", 525, 525, 300, height);
+            JLabel errorLabel = SystemPage.createLabel("Can't create Policy due to Invalid Inputs", 575, 525, 300, height);
             currentErrorLabels.add(errorLabel);
             createLifeP.add(errorLabel);
         }

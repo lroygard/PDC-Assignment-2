@@ -33,6 +33,11 @@ public class HomePage {
     JButton polNewHome;
     JButton polNewLife;
     
+    int x;
+    int y;
+    int width = 200;
+    int height = 50;
+    
     public HomePage(SystemPage sp) {
         homePageP = new JPanel(null);
         homePageP.setBackground(Color.WHITE);
@@ -55,17 +60,15 @@ public class HomePage {
         Font labelFont = new Font("Verdana", Font.BOLD, 16);
         Font optionsFont = new Font("Verdana", Font.BOLD, 20)  ;   
         
-        options = SystemPage.createLabel("OPTIONS", optionsFont, 430,100,200,25);
-        customer = SystemPage.createLabel("CUSTOMER",labelFont,175,150,200,25);
-        policy = SystemPage.createLabel("POLICY",labelFont,450,150,200,25);
-        staff = SystemPage.createLabel("STAFF", labelFont,725,150,200,25);
+        options = SystemPage.createLabel("OPTIONS", optionsFont, 430,175,200,25);
+        customer = SystemPage.createLabel("CUSTOMER",labelFont,175,225,200,25);
+        policy = SystemPage.createLabel("POLICY",labelFont,450, 225,200,25);
+        staff = SystemPage.createLabel("STAFF", labelFont,725,225,200,25);
     }
     
         public void createCustomerOptions() {
-        int x = 125;
-        int y = 200;
-        int width = 200;
-        int height = 50;
+        x = 125;
+        y = 275;
         
         custDetails = SystemPage.createButton("View Customer Details", x, y, width, height);
         custPolicy = SystemPage.createButton("View Customer Policies", x, y+=75, width, height);
@@ -83,19 +86,29 @@ public class HomePage {
                 LookUpCustomerPage luc = new LookUpCustomerPage(sp);
                 sp.showPanel(luc.lookUpCustomerP);
         }});
+        
+        custPolicy.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage(sp);
+                sp.showPanel(vpp.viewCustomerPolicyP);
+        }});
     }
         
     public void createPolicyOptions() {
-        int x = 390;
-        int y = 200;
-        int width = 200;
-        int height = 50;
+        x = 390;
+        y = 275;
 
         polView = SystemPage.createButton("View Customer Policies", x, y, width, height);
         polNewAuto = SystemPage.createButton("Create a new Auto Policy", x, y+=75, width, height);
         polNewHome = SystemPage.createButton("Create a new Home Policy", x, y+=75, width, height);
         polNewLife = SystemPage.createButton("Create a new Life Policy", x, y+75, width, height);
     
+        polView.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ViewCustomerPolicyPage vpp = new ViewCustomerPolicyPage(sp);
+                sp.showPanel(vpp.viewCustomerPolicyP);
+        }});
+        
         polNewAuto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CreateAutoPolicyPage cap = new CreateAutoPolicyPage(sp);
@@ -116,21 +129,16 @@ public class HomePage {
     }
     
     public void createStaffOptions() {
-        int x = 655;
-        int y = 200;
-        int width = 200;
-        int height = 50;
-        
+        x = 655;
+        y = 275;
+
         staffDetails = SystemPage.createButton("View/Change your details", x, y, width, height);
-        staffLookUp = SystemPage.createButton("Look up Staff Members*", x, y+=75, width, height);
-        staffNew = SystemPage.createButton("Create a new Staff Member*", x, y+=75, width, height);
-        logOut = SystemPage.createButton("Log Out", x, y+75, width, height);
         
-        staffNew.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                CreateStaffPage csp = new CreateStaffPage(sp);
-                sp.showPanel(csp.createStaffP);
-        }}); 
+        if (sp.insSys.currentStaff.isManager()) {
+            createManagerOptions();
+        }
+        
+        logOut = SystemPage.createButton("Log Out", x, y+75, width, height);
         
         logOut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -138,6 +146,26 @@ public class HomePage {
                 LoginPage login = new LoginPage();
                 login.setVisible(true);
         }}); 
+    }
+    
+    public void createManagerOptions() {
+        staffLookUp = SystemPage.createButton("Look up Staff Members*", x, y+=75, width, height);
+        staffNew = SystemPage.createButton("Create a new Staff Member*", x, y+=75, width, height);
+        
+        staffLookUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LookUpStaffPage lus = new LookUpStaffPage(sp);
+                sp.showPanel(lus.lookUpStaffP);
+        }}); 
+        
+        staffNew.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CreateStaffPage csp = new CreateStaffPage(sp);
+                sp.showPanel(csp.createStaffP);
+        }}); 
+        
+        homePageP.add(staffLookUp);
+        homePageP.add(staffNew);
     }
     
     public void addToPanel() {
@@ -150,8 +178,6 @@ public class HomePage {
         homePageP.add(custLookUp);
         homePageP.add(custNew);
         homePageP.add(staffDetails);
-        homePageP.add(staffLookUp);
-        homePageP.add(staffNew);
         homePageP.add(logOut);
         homePageP.add(polView);
         homePageP.add(polNewAuto);
