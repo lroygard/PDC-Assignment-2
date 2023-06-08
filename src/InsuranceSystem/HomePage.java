@@ -189,6 +189,7 @@ public class HomePage {
         logOut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SystemPage.getInstance().removeStaffVisual();
+                SystemPage.getInstance().removeCustomerVisual();
                 SystemPage.getInstance().dispose();
                 LoginPage login = new LoginPage(SystemPage.getInstance());
                 login.setVisible(true);

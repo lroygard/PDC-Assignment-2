@@ -61,8 +61,8 @@ public class LoginPage extends JFrame {
      * Initialise username and password
      */
     private void intialiseUserAndPassFields() {
-        usernameTextField = SystemPage.createTextField("201111", 100, 20, 160, 25);
-        passwordField = new JPasswordField("BobSmith1!");
+        usernameTextField = SystemPage.createTextField("", 100, 20, 160, 25);
+        passwordField = new JPasswordField("");
         passwordField.setBounds(100, 50, 160, 25);
     }
 

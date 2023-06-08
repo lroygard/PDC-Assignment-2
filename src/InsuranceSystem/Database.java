@@ -23,7 +23,7 @@ public class Database {
     }
 
     private void initialise() {
-        dropAllTables();
+        //dropAllTables();
 
         createStaffTable();
         createCustomerTable();
@@ -42,10 +42,10 @@ public class Database {
             statement = conn.createStatement();
 
             // Array of table names to be dropped
-            String[] tables = new String[]{"STAFF", "CUSTOMER", "AUTOPOLICY", "HOMEPOLICY", "LIFEPOLICY", "MEDICALHISTORY", "IDTABLE"};
+            String[] tables = new String[]{"STAFF", "CUSTOMER", "AUTOPOLICY", "HOMEPOLICY", "LIFEPOLICY", "MEDICALHISTORY", "ID"};
 
             // Loop through the table names
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < tables.length; i++) {
                 ResultSet table = conn.getMetaData().getTables(null, null, tables[i], null);
                 boolean tableExists = table.next();
 

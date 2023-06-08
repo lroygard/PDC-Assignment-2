@@ -174,7 +174,6 @@ public class SystemPage extends JFrame implements SystemPageObserver {
      * Removes the name of the previous staff on the screen
      */
     public void removeStaffVisual() {
-
         user.setText("");
         managerInfo.setText("");
         
@@ -238,6 +237,10 @@ public class SystemPage extends JFrame implements SystemPageObserver {
         repaint();
     }
 
+    public void removeCustomerVisual() {
+        customerInfo.setText("");
+    }
+    
     /**
      * Shows a panel on the screen
      *
@@ -267,7 +270,7 @@ public class SystemPage extends JFrame implements SystemPageObserver {
      * @param x The x-coord of the button
      * @param y The y-coord of the button
      * @param width The width of the button
-     * @param height The heigh of the button
+     * @param height The height of the button
      * @return the button that was created
      */
     public static JButton createButton(String text, int x, int y, int width, int height) {

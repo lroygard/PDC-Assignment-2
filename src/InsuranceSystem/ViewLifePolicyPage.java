@@ -33,7 +33,7 @@ public class ViewLifePolicyPage extends ViewPolicyPage {
 
         for (int i = 0; i < labelNames.length; i++) {
             y += 50;
-            JLabel label = SystemPage.createLabel(labelNames[i], fontBold, x, y, width, height);
+            JLabel label = SystemPage.createLabel(labelNames[i], fontBold, x, y, width+50, height);
             viewLifePolicyp.add(label);
         }
     }
@@ -49,13 +49,13 @@ public class ViewLifePolicyPage extends ViewPolicyPage {
         String[] information = policy.getStringArray();
 
         for (int i = 0; i < information.length; i++) {
-            if (i < 4) { // Before medical conditions add 50 to y
+            if (i < 5) { // Before medical conditions add 50 to y
                 y += 50;
             } else if (i == 4 && information.length > 12) { //When it gets to the medical conditions, and there are too many to fit on the page
                 x = width * 3 + 50;
                 y += height + 50;
             } else if (i == 12) {
-                x = width * 5;
+                x = width * 3 + 50;
                 y = 450;
             } else {
                 y += height;
