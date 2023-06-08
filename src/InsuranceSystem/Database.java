@@ -23,8 +23,10 @@ public class Database {
     }
 
     private void initialise() {
+        //UNCOMMENT TO DELETE ALL DATABASE INFORMATION (MUST LOG IN FIRST)
         //dropAllTables();
 
+        //Create tables if they are not already there
         createStaffTable();
         createCustomerTable();
         createAutoPolicyTable();
