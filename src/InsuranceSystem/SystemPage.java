@@ -103,7 +103,7 @@ public class SystemPage extends JFrame implements SystemPageObserver {
         logo.setBounds(0, 10, 250, 175);
 
         //Get Logo and resive it
-        ImageIcon originalIcon = new ImageIcon("./resources/logo.png");
+        ImageIcon originalIcon = new ImageIcon("./logo.png");
         Image originalImage = originalIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(225, 150, Image.SCALE_SMOOTH);
         ImageIcon resizedIcon = new ImageIcon(resizedImage);

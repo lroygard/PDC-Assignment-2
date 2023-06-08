@@ -50,7 +50,8 @@ public class DatabaseManager {
             try {
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Please close the previous application before starting a new one", "Message", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Database already open / database file not found", "Message", JOptionPane.WARNING_MESSAGE);
+                
                 System.exit(0);
             }
         }

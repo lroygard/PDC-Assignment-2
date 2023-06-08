@@ -10,7 +10,8 @@ public class LoginPage extends JFrame {
 
     private JPanel panel;
 
-    private ArrayList<Staff> staff = Database.getStaffList();
+    private Database database;
+    private ArrayList<Staff> staff;
 
     private SystemPageObserver observer;
 
@@ -22,6 +23,8 @@ public class LoginPage extends JFrame {
     public JButton loginButton;
 
     public LoginPage(SystemPageObserver observer) {
+        this.database = Database.getInstance();
+        this.staff = Database.getStaffList();
         this.observer = observer;
 
         panel = new JPanel(null);
