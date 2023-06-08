@@ -7,12 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class LoginPage extends JFrame {
+
     private JPanel panel;
-    
+
     private ArrayList<Staff> staff = Database.getStaffList();
-    
+
     private SystemPageObserver observer;
-    
+
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel wrongPassword;
@@ -36,26 +37,38 @@ public class LoginPage extends JFrame {
         add(panel);
 
     }
-    
+
+    /**
+     * Initalises components
+     */
     private void initialiseComponents() {
         initaliseLabels();
         intialiseUserAndPassFields();
         intialiseLogInButton();
- 
+
     }
-    
+
+    /**
+     * Initialise the id and password label and the error label
+     */
     private void initaliseLabels() {
         usernameLabel = SystemPage.createLabel("ID:", 20, 20, 80, 25);
         passwordLabel = SystemPage.createLabel("Password:", 20, 50, 80, 25);
         wrongPassword = SystemPage.createLabel("Incorrect ID or Password. Please Try Again.", Color.red, 20, 95, 400, 50);
     }
-    
+
+    /**
+     * Initialise username and password
+     */
     private void intialiseUserAndPassFields() {
         usernameTextField = SystemPage.createTextField("201111", 100, 20, 160, 25);
         passwordField = new JPasswordField("BobSmith1!");
         passwordField.setBounds(100, 50, 160, 25);
     }
-    
+
+    /**
+     * Initialise the log in button and adds it's action listener
+     */
     private void intialiseLogInButton() {
         loginButton = SystemPage.createButton("Log In", 100, 80, 80, 25);
 
@@ -64,7 +77,7 @@ public class LoginPage extends JFrame {
                 try {
                     int id = Integer.parseInt(usernameTextField.getText());
                     String password = new String(passwordField.getPassword());
-                                 
+
                     Staff staff = checkDetails(id, password);
                     if (staff != null) {
                         observer.notifyPasswordCorrect(staff);
@@ -80,18 +93,28 @@ public class LoginPage extends JFrame {
             }
         });
     }
-    
+
+    /**
+     * checks if a id and password are associated with staff member
+     *
+     * @param id the id to check
+     * @param password the password to check
+     * @return the staff it is found, otherwise null
+     */
     private Staff checkDetails(int id, String password) {
-        for (Staff thisStaff: staff) {
-            if(id == thisStaff.getId()) {
+        for (Staff thisStaff : staff) {
+            if (id == thisStaff.getId()) {
                 if (thisStaff.getPassword().equals(password)) {
                     return thisStaff;
                 }
-            } 
+            }
         }
         return null;
     }
-    
+
+    /**
+     * Adds component
+     */
     private void addToPanel() {
         panel.add(usernameLabel);
         panel.add(passwordLabel);

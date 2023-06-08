@@ -16,11 +16,11 @@ public class AutoPolicy extends Policy {
     /**
      * Default Constructor
      */
-    public AutoPolicy() {}
+    public AutoPolicy() {
+    }
 
     /**
      * Constructor for the AutoPolicy class.
-     * This constructor creates an instance of AutoPolicy with the provided parameters
      *
      * @param policyId The ID of the policy.
      * @param customerId The ID of the customer associated with the policy
@@ -29,14 +29,16 @@ public class AutoPolicy extends Policy {
      * @param yearlyPremium The yearly premium amount of the policy
      * @param frequency The payment frequency for the policy
      * @param make The brand of the car insured by the policy
-     * @param model  The model of the car insured by the policy
+     * @param model The model of the car insured by the policy
      * @param year The year the car insured by the policy was made
      * @param currentLicense The type of license held by the policyholder
-     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history
-     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes
+     * @param accidentHistory A boolean value indicating whether the
+     * policyholder has an accident history
+     * @param commercialUse A boolean value indicating whether the insured car
+     * is used for commercial purposes
      */
-    public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage, 
-            double yearlyPremium, PaymentFrequency frequency, CarBrand make, CarModel model, 
+    public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage,
+            double yearlyPremium, PaymentFrequency frequency, CarBrand make, CarModel model,
             int year, LicenseType currentLicense, boolean accidentHistory, boolean commercialUse) {
         super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
         this.make = make;
@@ -46,11 +48,9 @@ public class AutoPolicy extends Policy {
         this.accidentHistory = accidentHistory;
         this.commercialUse = commercialUse;
     }
-    
-    
+
     /**
      * Constructor for the AutoPolicy class.
-     * This constructor creates an instance of AutoPolicy with the provided parameters
      *
      * @param policyId The ID of the policy.
      * @param customerId The ID of the customer associated with the policy
@@ -59,14 +59,16 @@ public class AutoPolicy extends Policy {
      * @param yearlyPremium The yearly premium amount of the policy
      * @param frequency The payment frequency for the policy
      * @param make The brand of the car insured by the policy
-     * @param model  The model of the car insured by the policy
+     * @param model The model of the car insured by the policy
      * @param year The year the car insured by the policy was made
      * @param currentLicense The type of license held by the policyholder
-     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history
-     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes
+     * @param accidentHistory A boolean value indicating whether the
+     * policyholder has an accident history
+     * @param commercialUse A boolean value indicating whether the insured car
+     * is used for commercial purposes
      */
-    public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage, 
-            double yearlyPremium, String frequency, String make, String model, 
+    public AutoPolicy(int policyId, int customerId, double assetTotal, double coverage,
+            double yearlyPremium, String frequency, String make, String model,
             int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
         super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
         this.make = CarBrand.valueOf(make);
@@ -76,26 +78,10 @@ public class AutoPolicy extends Policy {
         this.accidentHistory = accidentHistory;
         this.commercialUse = commercialUse;
     }
-    
-    /**
-     * Converts a string of a car model to the corresponding CarModel enum value
-     *
-     * @param modelName The string representation of the car model
-     * @param make  The brand of the car insured by the policy as a CarBrand enum
-     * @return The CarModel enum value corresponding to the input string
-     */
-    public CarModel stringToCarModel(String modelName, CarBrand make) {
-        ArrayList<CarModel> carModels = CARMODELS.get(make);
-        for (CarModel model : carModels) {
-            if (model.getName().equalsIgnoreCase(modelName)) {
-                return model;
-            }
-        }
-        return null; 
-    }
 
     /**
      * Returns the make of the car
+     *
      * @return the make of the car
      */
     public CarBrand getMake() {
@@ -104,6 +90,7 @@ public class AutoPolicy extends Policy {
 
     /**
      * Returns the model of the car
+     *
      * @return the model of the car
      */
     public CarModel getModel() {
@@ -112,6 +99,7 @@ public class AutoPolicy extends Policy {
 
     /**
      * Returns the year of the car
+     *
      * @return the year of the car
      */
     public int getYear() {
@@ -120,6 +108,7 @@ public class AutoPolicy extends Policy {
 
     /**
      * Returns the license type
+     *
      * @return the license type
      */
     public LicenseType getCurrentLicense() {
@@ -128,6 +117,7 @@ public class AutoPolicy extends Policy {
 
     /**
      * Returns whether the user has accident history
+     *
      * @return whether the use has accident history
      */
     public boolean hasAccidentHistory() {
@@ -136,16 +126,23 @@ public class AutoPolicy extends Policy {
 
     /**
      * Returns if the car is being used commercially
+     *
      * @return if the car is being used commercially
      */
     public boolean isCommercialUse() {
         return commercialUse;
     }
 
+    /**
+     * Gets a string array of the information in the policy
+     *
+     * @return A string array of information
+     */
     @Override
     public String[] getStringArray() {
         String[] array = new String[6];
 
+        //Add values into array
         array[0] = this.make.toString();
         array[1] = this.model.getName();
         array[2] = String.valueOf(this.year);
@@ -155,44 +152,10 @@ public class AutoPolicy extends Policy {
 
         return array;
     }
-    
-    /**
-     * Enum representing license types
-     */
-    public static enum LicenseType {
-        Learners,
-        Restricted,
-        Full,
-    }
-    
-    /**
-     * Enum representing car brands
-     */
-    public static enum CarBrand {
-        Audi,
-        Bmw,
-        Ford,
-        Holden,
-        Honda,
-        Hyundai,
-        Jeep,
-        Kia,
-        Nissan,
-        Mazda,
-        Mercedes,
-        Mitsubishi,
-        Peugoet,
-        Porsche,
-        Subaru,
-        Suzuki,
-        Toyota,
-        Volkswagen,
-        Volvo,
-        Other
-    }
 
     /**
      * Calculates the premium of the auto policy
+     *
      * @return the premium of the auto policy
      */
     @Override
@@ -200,10 +163,10 @@ public class AutoPolicy extends Policy {
         //Calculate how old the car is
         int age = Policy.CURRENTYEAR - this.getYear();
         //Calculate the base premium based on the coverage
-        double premium = this.getCoverage()/4;
-        
+        double premium = this.getCoverage() / 4;
+
         //Adjust the premium based on the risk factor of the car model
-        premium *= ((this.getModel().getRisk()/10)+1);
+        premium *= ((this.getModel().getRisk() / 10) + 1);
 
         //Adjust the premium based on the age of the car
         if (age <= 5) {
@@ -235,30 +198,13 @@ public class AutoPolicy extends Policy {
         if (premium < 1000) {
             premium = 1000;
         }
-        
+
         return premium;
     }
-    
-    /**
-     * Calculates the premium of an incomplete auto policy
-     * @param coverage The coverage amount of the policy.
-     * @param frequency The payment frequency for the policy.
-     * @param make The brand of the car insured by the policy.
-     * @param model The model of the car insured by the policy.
-     * @param year  The year of the car insured by the policy.
-     * @param currentLicense The type of license held by the policyholder.
-     * @param accidentHistory A boolean value indicating whether the policyholder has an accident history.
-     * @param commercialUse A boolean value indicating whether the insured car is used for commercial purposes.
-     * @return the calculated premium
-     */
-    public static double calculatePremium(double coverage, String frequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
-        AutoPolicy dummyAP = new AutoPolicy(-1, -1, -1, coverage, -1, frequency, make, model, year, currentLicense, accidentHistory, commercialUse);
-        return dummyAP.calculatePremium();
-    }
-
 
     /**
      * Create a new Auto Policy id
+     *
      * @return a new Auto Policy id
      */
     @Override
@@ -267,20 +213,102 @@ public class AutoPolicy extends Policy {
     }
 
     /**
+     * Converts a string of a car model to the corresponding CarModel enum value
+     *
+     * @param modelName The string representation of the car model
+     * @param make The brand of the car insured by the policy as a CarBrand enum
+     * @return The CarModel enum value corresponding to the input string
+     */
+    public CarModel stringToCarModel(String modelName, CarBrand make) {
+        //get the models associated with the brand of car
+        ArrayList<CarModel> carModels = CARMODELS.get(make);
+
+        //For each model check if the model name is equal
+        for (CarModel model : carModels) {
+            if (model.getName().equalsIgnoreCase(modelName)) {
+                return model;
+            }
+        }
+
+        //Return null if nothing is found
+        return null;
+    }
+
+    /**
+     * Enum representing license types
+     */
+    public static enum LicenseType {
+        Learners,
+        Restricted,
+        Full,
+    }
+
+    /**
+     * Enum representing car brands
+     */
+    public static enum CarBrand {
+        Audi,
+        Bmw,
+        Ford,
+        Holden,
+        Honda,
+        Hyundai,
+        Jeep,
+        Kia,
+        Nissan,
+        Mazda,
+        Mercedes,
+        Mitsubishi,
+        Peugoet,
+        Porsche,
+        Subaru,
+        Suzuki,
+        Toyota,
+        Volkswagen,
+        Volvo,
+        Other
+    }
+
+    /**
+     * Calculates the premium of an incomplete auto policy
+     *
+     * @param coverage The coverage amount of the policy.
+     * @param frequency The payment frequency for the policy.
+     * @param make The brand of the car insured by the policy.
+     * @param model The model of the car insured by the policy.
+     * @param year The year of the car insured by the policy.
+     * @param currentLicense The type of license held by the policyholder.
+     * @param accidentHistory A boolean value indicating whether the
+     * policyholder has an accident history.
+     * @param commercialUse A boolean value indicating whether the insured car
+     * is used for commercial purposes.
+     * @return the calculated premium
+     */
+    public static double calculatePremium(double coverage, String frequency, String make, String model, int year, String currentLicense, boolean accidentHistory, boolean commercialUse) {
+        AutoPolicy dummyAP = new AutoPolicy(-1, -1, -1, coverage, -1, frequency, make, model, year, currentLicense, accidentHistory, commercialUse);
+        return dummyAP.calculatePremium();
+    }
+
+    /**
      * Creates a HashMap of CarBrand and corresponding ArrayList of CarModel.
+     *
      * @return The HashMap containing CarBrand and CarModel mappings.
      */
     private static HashMap<CarBrand, ArrayList<CarModel>> CreateCarModels() {
+        // Create an empty HashMap to store CarBrand and CarModel mappings
         HashMap<CarBrand, ArrayList<CarModel>> newCarModels = new HashMap<>();
-        
+
+        // Create and populate the ArrayList for Toyota car models
         ArrayList<CarModel> toyota = new ArrayList<>();
         toyota.add(new CarModel("Corolla", 4, 25000));
         toyota.add(new CarModel("Camry", 2, 30000));
         toyota.add(new CarModel("Hilux", 3, 40000));
         toyota.add(new CarModel("RAV4", 2, 35000));
         toyota.add(new CarModel("Other", 3, 20000));
+        // Add Toyota car models ArrayList to the HashMap with CarBrand.Toyota as the key
         newCarModels.put(CarBrand.Toyota, toyota);
-        
+
+        //Repeat for each other brand
         ArrayList<CarModel> ford = new ArrayList<>();
         ford.add(new CarModel("Focus", 6, 22000));
         ford.add(new CarModel("Fiesta", 4, 18000));
@@ -288,8 +316,8 @@ public class AutoPolicy extends Policy {
         ford.add(new CarModel("Escape", 3, 28000));
         ford.add(new CarModel("Other", 4, 20000));
         newCarModels.put(CarBrand.Ford, ford);
-        
-         ArrayList<CarModel> holden = new ArrayList<>();
+
+        ArrayList<CarModel> holden = new ArrayList<>();
         holden.add(new CarModel("Commodore", 6, 28000));
         holden.add(new CarModel("Astra", 4, 22000));
         holden.add(new CarModel("Colorado", 8, 40000));
@@ -344,7 +372,7 @@ public class AutoPolicy extends Policy {
         kia.add(new CarModel("Cerato", 3, 22000));
         kia.add(new CarModel("Other", 3, 25000));
         newCarModels.put(CarBrand.Kia, kia);
-        
+
         ArrayList<CarModel> volkswagen = new ArrayList<>();
         volkswagen.add(new CarModel("Golf", 5, 25000));
         volkswagen.add(new CarModel("Polo", 4, 18000));
@@ -376,7 +404,7 @@ public class AutoPolicy extends Policy {
         mercedes.add(new CarModel("A-Class", 3, 30000));
         mercedes.add(new CarModel("Other", 4, 35000));
         newCarModels.put(CarBrand.Mercedes, mercedes);
-        
+
         ArrayList<CarModel> audi = new ArrayList<>();
         audi.add(new CarModel("A3", 5, 30000));
         audi.add(new CarModel("Q5", 6, 50000));
@@ -384,7 +412,7 @@ public class AutoPolicy extends Policy {
         audi.add(new CarModel("Q3", 4, 35000));
         audi.add(new CarModel("Other", 4, 40000));
         newCarModels.put(CarBrand.Audi, audi);
-        
+
         ArrayList<CarModel> honda = new ArrayList<>();
         honda.add(new CarModel("Civic", 4, 20000));
         honda.add(new CarModel("HR-V", 3, 50000));
@@ -392,7 +420,7 @@ public class AutoPolicy extends Policy {
         honda.add(new CarModel("CR-V", 2, 35000));
         honda.add(new CarModel("Other", 3, 45000));
         newCarModels.put(CarBrand.Honda, honda);
-        
+
         ArrayList<CarModel> peugeot = new ArrayList<>();
         peugeot.add(new CarModel("208", 3, 22000));
         peugeot.add(new CarModel("3008", 5, 40000));
@@ -400,7 +428,7 @@ public class AutoPolicy extends Policy {
         peugeot.add(new CarModel("2008", 4, 30000));
         peugeot.add(new CarModel("Other", 4, 35000));
         newCarModels.put(CarBrand.Peugoet, peugeot);
-        
+
         ArrayList<CarModel> volvo = new ArrayList<>();
         volvo.add(new CarModel("XC90", 8, 70000));
         volvo.add(new CarModel("XC60", 5, 50000));
@@ -416,7 +444,7 @@ public class AutoPolicy extends Policy {
         jeep.add(new CarModel("Renegade", 5, 30000));
         jeep.add(new CarModel("Other", 5, 30000));
         newCarModels.put(CarBrand.Jeep, jeep);
-        
+
         ArrayList<CarModel> porsche = new ArrayList<>();
         porsche.add(new CarModel("911", 10, 120000));
         porsche.add(new CarModel("Cayenne", 9, 90000));
@@ -425,13 +453,17 @@ public class AutoPolicy extends Policy {
         porsche.add(new CarModel("Other", 7, 75000));
         newCarModels.put(CarBrand.Porsche, porsche);
 
+        // Create and populate the ArrayList for Other car models
         ArrayList<CarModel> other = new ArrayList<>();
-        for (int i = 1; i <= 10; i++){
-            other.add(new CarModel("Risk Factor: "+Integer.toString(i), i));
+        // Generate car models with risk factors ranging from 1 to 10
+        for (int i = 1; i <= 10; i++) {
+            other.add(new CarModel("Risk Factor: " + Integer.toString(i), i));
         }
+        // Add the Other car models ArrayList to the HashMap with CarBrand.Other as the key
         newCarModels.put(CarBrand.Other, other);
-        
+
+        // Return the HashMap containing CarBrand and CarModel mappings
         return newCarModels;
     }
-    
+
 }

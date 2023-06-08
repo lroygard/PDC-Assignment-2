@@ -1,22 +1,43 @@
 package InsuranceSystem;
 
-import java.util.ArrayList;
+public class HomePolicy extends Policy {
 
-public class HomePolicy extends Policy{
-    String address;
-    int yearBuilt;
-    int levels;
-    int squareMeters;
-    int noBuildings;
-    WallMaterial wallMaterial;
-    RoofMaterial roofMaterial;
-    Quality constructionQuality;
-    
-    public HomePolicy() {}
+    private String address;
+    private int yearBuilt;
+    private int levels;
+    private int squareMeters;
+    private int noBuildings;
+    private WallMaterial wallMaterial;
+    private RoofMaterial roofMaterial;
+    private Quality constructionQuality;
 
+    /**
+     * Default Constructor
+     */
+    public HomePolicy() {
+    }
+
+    /**
+     * Constructor for the Home class.
+     *
+     * @param policyId The ID of the policy.
+     * @param customerId The ID of the customer associated with the policy
+     * @param assetTotal The total value of the insured assets
+     * @param coverage The coverage amount of the policy
+     * @param yearlyPremium The yearly premium amount of the policy
+     * @param frequency The payment frequency for the policy
+     * @param address The address of the home insured by the policy
+     * @param yearBuilt The year the house was built
+     * @param levels The number of levels of the house
+     * @param squareMeters The number of squaremeters of the house
+     * @param noBuildings The number of buildings insured in the policy
+     * @param wallMaterial The material the walls are made of
+     * @param roofMaterial The material the roof(s) are made of
+     * @param constructionQuality The construction quality of the house
+     */
     public HomePolicy(int policyId, int customerId, double assetTotal, double coverage,
-            double yearlyPremium, PaymentFrequency frequency, String address, int yearBuilt, 
-            int levels, int squareMeters, int noBuildings, WallMaterial wallMaterial, 
+            double yearlyPremium, PaymentFrequency frequency, String address, int yearBuilt,
+            int levels, int squareMeters, int noBuildings, WallMaterial wallMaterial,
             RoofMaterial roofMaterial, Quality constructionQuality) {
         super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
         this.address = address;
@@ -29,9 +50,27 @@ public class HomePolicy extends Policy{
         this.constructionQuality = constructionQuality;
     }
 
+    /**
+     * Constructor for the Home class.
+     *
+     * @param policyId The ID of the policy.
+     * @param customerId The ID of the customer associated with the policy
+     * @param assetTotal The total value of the insured assets
+     * @param coverage The coverage amount of the policy
+     * @param yearlyPremium The yearly premium amount of the policy
+     * @param frequency The payment frequency for the policy
+     * @param address The address of the home insured by the policy
+     * @param yearBuilt The year the house was built
+     * @param levels The number of levels of the house
+     * @param squareMeters The number of squaremeters of the house
+     * @param noBuildings The number of buildings insured in the policy
+     * @param wallMaterial The material the walls are made of
+     * @param roofMaterial The material the roof(s) are made of
+     * @param constructionQuality The construction quality of the house
+     */
     public HomePolicy(int policyId, int customerId, double assetTotal, double coverage,
-            double yearlyPremium, String frequency, String address, int yearBuilt, 
-            int levels, int squareMeters, int noBuildings, String wallMaterial, 
+            double yearlyPremium, String frequency, String address, int yearBuilt,
+            int levels, int squareMeters, int noBuildings, String wallMaterial,
             String roofMaterial, String constructionQuality) {
         super(policyId, customerId, assetTotal, coverage, yearlyPremium, frequency);
         this.address = address;
@@ -43,43 +82,89 @@ public class HomePolicy extends Policy{
         this.roofMaterial = RoofMaterial.valueOf(roofMaterial);
         this.constructionQuality = Quality.valueOf(constructionQuality);
     }
-    
+
+    /**
+     * Returns the address of the house
+     *
+     * @return the adress of the house
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Returns the year built of the house
+     *
+     * @return the year built of the house
+     */
     public int getYearBuilt() {
         return yearBuilt;
     }
 
+    /**
+     * Returns the number of levels in the house
+     *
+     * @return the number of levels in the house
+     */
     public int getLevels() {
         return levels;
     }
 
+    /**
+     * Returns the number of square meters of the house
+     *
+     * @return the number of square meters of the house
+     */
     public int getSquareMeters() {
         return squareMeters;
     }
 
+    /**
+     * Returns the number of buildings on the property
+     *
+     * @return the number of buildings on the property
+     */
     public int getNoBuildings() {
         return noBuildings;
     }
 
+    /**
+     * Returns the material of the walls
+     *
+     * @return the material of the walls
+     */
     public WallMaterial getWallMaterial() {
         return wallMaterial;
     }
 
+    /**
+     * Returns the material of the roof(s)
+     *
+     * @return the material of the roof(s)
+     */
     public RoofMaterial getRoofMaterial() {
         return roofMaterial;
     }
 
+    /**
+     * Returns the construction quality
+     *
+     * @return the construction quality
+     */
     public Quality getConstructionQuality() {
         return constructionQuality;
     }
 
+    /**
+     * Gets a string array of the information in the policy
+     *
+     * @return A string array of information
+     */
     @Override
     public String[] getStringArray() {
         String[] array = new String[8];
 
+        //Add values into array
         array[0] = this.address;
         array[1] = String.valueOf(this.yearBuilt);
         array[2] = String.valueOf(this.squareMeters);
@@ -89,9 +174,12 @@ public class HomePolicy extends Policy{
         array[6] = this.roofMaterial.toString().replace("_", " ");
         array[7] = this.constructionQuality.toString();
 
-        return array;   
+        return array;
     }
-    
+
+    /**
+     * Enum representing wall materials
+     */
     public enum WallMaterial {
         Brick_Veneer,
         Double_Brick,
@@ -105,7 +193,10 @@ public class HomePolicy extends Policy{
         Weatherboard_Plank_Cladding,
         Other,
     }
-    
+
+    /**
+     * Enum representing roof materials
+     */
     public enum RoofMaterial {
         Flat_Fibre_Cement,
         Flat_Membrane,
@@ -118,23 +209,44 @@ public class HomePolicy extends Policy{
         Pitched_Timber_Shingles,
         Other,
     }
-    
+
+    /**
+     * Enum representing construction quality
+     */
     public enum Quality {
         Prestige,
         High,
         Standard,
     }
-    
+
+    /**
+     * Calculates the premium of an incomplete home policy
+     *
+     * @param coverage The coverage amount of the policy.
+     * @param yearBuilt The year the home was built
+     * @param levels The levels of the home
+     * @param squareMeters The square meters of the property
+     * @param noBuildings The number of buildings
+     * @param wallMaterial The material of the walls
+     * @param roofMaterial The material of the roof
+     * @param quality The quality of the build
+     * @return the calculated premium
+     */
     public static double calculatePremium(double coverage, int yearBuilt, int levels, int squareMeters, int noBuildings, String wallMaterial, String roofMaterial, String quality) {
         HomePolicy dummyHP = new HomePolicy(-1, -1, -1, coverage, -1, "MONTHLY", "", yearBuilt, levels, squareMeters, noBuildings, wallMaterial, roofMaterial, quality);
         return dummyHP.calculatePremium();
     }
-    
+
+    /**
+     * Calculates the premium of the policy
+     *
+     * @return the calculated premium
+     */
     @Override
     public double calculatePremium() {
         int age = SystemPage.CURRENTYEAR - this.getYearBuilt();
-        
-        double premium = this.getCoverage()/200;
+
+        double premium = this.getCoverage() / 200;
         switch (this.getWallMaterial()) {
             case Brick_Veneer:
             case Double_Brick:
@@ -157,7 +269,7 @@ public class HomePolicy extends Policy{
                 break;
         }
 
-        switch(roofMaterial) {
+        switch (roofMaterial) {
             case Flat_Fibre_Cement:
                 break;
             case Pitched_Concrete_Tiles:
@@ -175,7 +287,7 @@ public class HomePolicy extends Policy{
             case Other:
                 premium *= 2;
         }
-        
+
         switch (this.getConstructionQuality()) {
             case Prestige:
                 premium *= 1.5;
@@ -188,42 +300,52 @@ public class HomePolicy extends Policy{
                 break;
         }
 
-        premium += 1000 * (this.getNoBuildings() - 1);        
-        premium *= ((((double) this.getSquareMeters())/100)+1);
-        premium *= (((double) this.getLevels())/10)+1;
+        premium += 1000 * (this.getNoBuildings() - 1);
+        premium *= ((((double) this.getSquareMeters()) / 100) + 1);
+        premium *= (((double) this.getLevels()) / 10) + 1;
         premium += age;
         premium *= 10;
-        
+
         //Base premium rate
         if (premium < 1000) {
             premium = 1000;
         }
-        
+
         return premium;
     }
 
+    /**
+     * returns a new id for home policies
+     *
+     * @return the new id
+     */
     @Override
     protected int createId() {
         return Database.getNextId("HOMEPOLICY");
     }
-    
+
+    /**
+     * Checks the validity of an address
+     *
+     * @param address the address to check
+     * @return the address if it is valid or null if it isn't
+     */
     public static String checkAddress(String address) {
         int noSpaces = 0;
-        
-        if(address.charAt(0) > '0' && address.charAt(0) < '9') {
+
+        if (address.charAt(0) > '0' && address.charAt(0) < '9') {
             for (int i = 0; i < address.length(); i++) {
-                if(address.charAt(i) == ' ') {
+                if (address.charAt(i) == ' ') {
                     noSpaces++;
                 }
             }
-        } 
-        
-        if(noSpaces >= 2) {
+        }
+
+        if (noSpaces >= 2) {
             return address;
-        } 
-        else {
+        } else {
             return null;
         }
     }
-    
+
 }
