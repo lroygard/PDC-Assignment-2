@@ -212,7 +212,7 @@ public class LifePolicy extends Policy {
         }
 
         if (this.isGym()) {
-            premium -= 500;
+            premium -= 100;
         }
 
         switch (this.getHobbyRisk()) {

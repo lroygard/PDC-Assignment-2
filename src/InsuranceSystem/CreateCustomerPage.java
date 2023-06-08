@@ -15,12 +15,14 @@ public class CreateCustomerPage extends CreatePersonPage {
     private JTextField email;
     private JButton save;
 
+    private final ArrayList<JLabel>[] errorsWrapper = new ArrayList[]{new ArrayList<>()};
+
     public CreateCustomerPage() {
         createCustomerP = super.createPersonP;
         createCustomer = SystemPage.createLabel("Create Customer", new Font(null, Font.BOLD, 18), 425, 150, width, height);
 
-        phoneNumber = SystemPage.createTextField("Enter Phone Number", 300, 300, width, height);
-        email = SystemPage.createTextField("Enter Email", 300, 350, width, height);
+        phoneNumber = SystemPage.createTextField("Enter Phone Number", x + width, 300, width, height);
+        email = SystemPage.createTextField("Enter Email", x + width, 350, width, height);
         createSave();
         addCLabels();
 
@@ -32,7 +34,6 @@ public class CreateCustomerPage extends CreatePersonPage {
      */
     private void createSave() {
         save = SystemPage.createButton("Save Details", x + width, 400, width, height);
-        final ArrayList<JLabel>[] errorsWrapper = new ArrayList[]{new ArrayList<>()};
 
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -45,19 +46,17 @@ public class CreateCustomerPage extends CreatePersonPage {
      * Attempt to create a customer, and add errors if unsuccessful
      */
     private void createCustomer() {
-        ArrayList<JLabel> errors = new ArrayList<>();
-
         //Remove previous labels
-        for (JLabel label : errors) {
+        for (JLabel label : errorsWrapper[0]) {
             createCustomerP.remove(label);
         }
 
         //get next labels, and attempt create customer
-        errors = InsuranceSystem.getInstance().createCustomer(firstName.getText(), lastName.getText(),
+        errorsWrapper[0] = InsuranceSystem.getInstance().createCustomer(firstName.getText(), lastName.getText(),
                 Integer.parseInt(birthYear.getSelectedItem().toString()), phoneNumber.getText(), email.getText());
 
         //Add next labels
-        for (JLabel label : errors) {
+        for (JLabel label : errorsWrapper[0]) {
             createCustomerP.add(label);
         }
 

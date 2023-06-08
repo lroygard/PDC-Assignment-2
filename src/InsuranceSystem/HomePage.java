@@ -85,8 +85,7 @@ public class HomePage {
 
         custDetails.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ViewCustomerPage vcp = new ViewCustomerPage(InsuranceSystem.getInstance().currentCustomer);
-                SystemPage.getInstance().showPanel(vcp.viewCustomerP);
+                customerDetails();
             }
         });
 
@@ -110,6 +109,18 @@ public class HomePage {
                 SystemPage.getInstance().showPanel(vpp.viewCustomerPolicyP);
             }
         });
+    }
+    
+    /**
+     * Process for when customer Details is clicked
+     */
+    private void customerDetails() {
+        if (InsuranceSystem.getInstance().currentCustomer != null) {
+            ViewCustomerPage vcp = new ViewCustomerPage(InsuranceSystem.getInstance().currentCustomer);
+            SystemPage.getInstance().showPanel(vcp.viewCustomerP);
+        } else {
+            JOptionPane.showMessageDialog(null, "No Current Customer", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**
@@ -160,7 +171,7 @@ public class HomePage {
         x = 655;
         y = 275;
 
-        staffDetails = SystemPage.createButton("View/Change your details", x, y, width, height);
+        staffDetails = SystemPage.createButton("View your details", x, y, width, height);
 
         staffDetails.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -177,6 +188,7 @@ public class HomePage {
 
         logOut.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                SystemPage.getInstance().removeStaffVisual();
                 SystemPage.getInstance().dispose();
                 LoginPage login = new LoginPage(SystemPage.getInstance());
                 login.setVisible(true);

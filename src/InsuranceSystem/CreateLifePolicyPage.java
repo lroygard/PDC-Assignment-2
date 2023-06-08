@@ -33,6 +33,9 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
         //Edit bounds
         x += width;
         y = 150;
+        
+        saveButton.setBounds(550, 490, width * 2 - 50, height);
+        calculate.setBounds(550, 450, width * 2 - 50, height);
 
         //Initialise components
         createRisk();
@@ -314,7 +317,9 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
         Database.addPolicy(newPolicy);
         InsuranceSystem.getInstance().currentCustomer.addPolicy(newPolicy);
 
+        y = 525;
         addSuccessLabel("Policy Successfully Created");
+        y += height;
         addSuccessLabel("Life Policy ID: " + id);
     }
 
@@ -325,7 +330,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
      */
     @Override
     protected void addSuccessLabel(String message) {
-        JLabel label = SystemPage.createLabel(message, Color.BLUE, 525, 525, 300, height);
+        JLabel label = SystemPage.createLabel(message, Color.BLUE, 550, y, 300, height);
         currentErrorLabels.add(label);
         createLifeP.add(label);
     }
@@ -337,7 +342,7 @@ public class CreateLifePolicyPage extends CreatePolicyPage {
      */
     @Override
     protected void createPolicyError(String errorMessage) {
-        JLabel errorLabel = SystemPage.createLabel(errorMessage, Color.red, 525, 525, 300, height);
+        JLabel errorLabel = SystemPage.createLabel(errorMessage, Color.red, 550, 525, 300, height);
         currentErrorLabels.add(errorLabel);
         createLifeP.add(errorLabel);
     }

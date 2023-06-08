@@ -35,12 +35,12 @@ public class ViewStaffPage extends ViewPersonPage {
     protected void addLabels() {
         x = width * 2;
 
-        String[] labelNames = {"Extension:", "Email:", "Manager:"};
+        String[] labelNames = {"Extension:", "Email:", "Password:", "Manager:"};
 
         for (int i = 0; i < labelNames.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(labelNames[i], fontBold, x, y, width * 2, height);
             viewStaffP.add(label);
+            y += 50;
         }
     }
 
@@ -55,9 +55,9 @@ public class ViewStaffPage extends ViewPersonPage {
         y = 350;
 
         for (int i = 0; i < information.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(information[i], font, x, y, width * 2, height);
             viewStaffP.add(label);
+            y += 50;
         }
     }
 }

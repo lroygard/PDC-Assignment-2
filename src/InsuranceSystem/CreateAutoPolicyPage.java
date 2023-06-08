@@ -347,7 +347,9 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
         Database.addPolicy(newPolicy);
         InsuranceSystem.getInstance().currentCustomer.addPolicy(newPolicy);
 
+        y = 525;
         addSuccessLabel("Policy Successfully Created");
+        y += height;
         addSuccessLabel("Auto Policy ID: " + id);
     }
 
@@ -358,7 +360,7 @@ public class CreateAutoPolicyPage extends CreatePolicyPage {
      */
     @Override
     protected void addSuccessLabel(String message) {
-        JLabel label = SystemPage.createLabel(message, Color.BLUE, 525, 525, 300, height);
+        JLabel label = SystemPage.createLabel(message, Color.BLUE, 525, y, 300, height);
         currentErrorLabels.add(label);
         createAutoP.add(label);
     }

@@ -21,7 +21,7 @@ public class ViewCustomerPage extends ViewPersonPage {
         viewCustomerP = viewPersonP;
         viewCustomerP.setBackground(Color.white);
 
-        viewCustomer = SystemPage.createLabel("View Staff", new Font(null, Font.BOLD, 18), 425, 150, width, height);
+        viewCustomer = SystemPage.createLabel("View Customer", new Font(null, Font.BOLD, 18), 425, 150, width, height);
         viewCustomerP.add(viewCustomer);
 
         addLabels();
@@ -38,9 +38,9 @@ public class ViewCustomerPage extends ViewPersonPage {
         String[] labelNames = {"Phone No.:", "Email:", "No. Policies:"};
 
         for (int i = 0; i < labelNames.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(labelNames[i], fontBold, x, y, width * 2, height);
             viewCustomerP.add(label);
+            y += 50;
         }
     }
 
@@ -55,9 +55,9 @@ public class ViewCustomerPage extends ViewPersonPage {
         y = 350;
 
         for (int i = 0; i < information.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(information[i], font, x, y, width * 2, height);
             viewCustomerP.add(label);
+            y += 50;
         }
     }
 }

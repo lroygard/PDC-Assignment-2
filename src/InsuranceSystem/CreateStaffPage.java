@@ -16,6 +16,8 @@ public class CreateStaffPage extends CreatePersonPage {
     private JButton save;
     private JComboBox manager;
 
+    private final ArrayList<JLabel>[] errorsWrapper = new ArrayList[]{new ArrayList<>()};
+
     public CreateStaffPage() {
         createStaffP = super.createPersonP;
         createStaff = SystemPage.createLabel("Create Staff", new Font(null, Font.BOLD, 18), 425, 150, width, height);
@@ -47,7 +49,7 @@ public class CreateStaffPage extends CreatePersonPage {
 
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                createStaff();
             }
         });
     }
@@ -56,21 +58,20 @@ public class CreateStaffPage extends CreatePersonPage {
      * Attempt to create a staff, and add errors if unsuccessful
      */
     public void createStaff() {
-        ArrayList<JLabel> errors = new ArrayList<>();
 
         //Remove previous labels
-        for (JLabel label : errors) {
+        for (JLabel label : errorsWrapper[0]) {
             createStaffP.remove(label);
         }
 
         //get next labels, and attempt create customer
-        errors = InsuranceSystem.getInstance().createStaff(firstName.getText(), lastName.getText(),
+        errorsWrapper[0] = InsuranceSystem.getInstance().createStaff(firstName.getText(), lastName.getText(),
                 Integer.parseInt(birthYear.getSelectedItem().toString()),
                 extension.getText(), password.getText(),
                 Boolean.parseBoolean(manager.getSelectedItem().toString()));
 
         //Add next labels
-        for (JLabel label : errors) {
+        for (JLabel label : errorsWrapper[0]) {
             createStaffP.add(label);
         }
 

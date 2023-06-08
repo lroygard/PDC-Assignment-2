@@ -119,7 +119,7 @@ public class Staff extends Person {
             }
         }
 
-        if (password.length() > 8 && password.length() < 16
+        if (password.length() >= 8 && password.length() <= 16
                 && hasSpecialChar && hasUpperCase && hasLowerCase && hasNumber) {
             return password;
         }
@@ -134,11 +134,12 @@ public class Staff extends Person {
      */
     @Override
     public String[] getStringArray() {
-        String[] array = new String[3];
+        String[] array = new String[4];
 
         array[0] = String.valueOf(this.extension);
         array[1] = this.email;
-        array[2] = String.valueOf(this.manager);
+        array[2] = this.password;
+        array[3] = String.valueOf(this.manager);
 
         return array;
     }

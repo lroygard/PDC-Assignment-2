@@ -38,8 +38,6 @@ public class SystemPage extends JFrame implements SystemPageObserver {
         LoginPage lip = new LoginPage(this);
         lip.setVisible(true);
     }
-
-    ;
     
     /**
      * Singleton pattern method to get the instance of SystemPage
@@ -137,15 +135,52 @@ public class SystemPage extends JFrame implements SystemPageObserver {
      */
     private void createStaffVisual() {
         //Set Bounds
-        x = 700;
+        x = 650;
         y = 40;
         width = 200;
         height = 15;
 
         //Create Labels
         userInfo = createLabel("Logged in as: ", FONT, x, y += 20, width, height);
-        user = createLabel(InsuranceSystem.getInstance().currentStaff.getFullName(), FONTPLAIN, x + width - 100, y, width, height);
-        managerInfo = createLabel("Manager Permissions: " + Boolean.toString(InsuranceSystem.getInstance().currentStaff.isManager()).toUpperCase(), FONT, x, y + 20, width, height);
+        user = createLabel("", FONTPLAIN, x-20 + width - 100, y, width, height);
+        managerInfo = createLabel("Manager Status: ", FONT, x, y + 20, width, height);
+        
+        updateStaffVisual(InsuranceSystem.getInstance().currentStaff);
+        
+        //Repaint to show updated customer
+        validate();
+        repaint();
+    }
+    
+    /**
+     * Updates the staff customer on the screen.
+     *
+     * @param staff the customer to be shown.
+     */
+    public void updateStaffVisual(Staff staff) {
+        //If a customer is selected
+        String fullName = InsuranceSystem.getInstance().currentStaff.getFullName();
+        String manager = Boolean.toString(InsuranceSystem.getInstance().currentStaff.isManager()).toUpperCase();
+
+        user.setText(fullName);
+        managerInfo.setText("Manager Status: "+manager);
+        
+        //Repaint to show updated customer
+        validate();
+        repaint();
+    }
+    
+    /**
+     * Removes the name of the previous staff on the screen
+     */
+    public void removeStaffVisual() {
+
+        user.setText("");
+        managerInfo.setText("");
+        
+        //Repaint to show updated customer
+        validate();
+        repaint();
     }
 
     /**
@@ -165,7 +200,7 @@ public class SystemPage extends JFrame implements SystemPageObserver {
      */
     private void createCustomerVisual() {
         //Set bounds
-        x = 700;
+        x = 650;
         y = 115;
         width = 200;
         height = 15;
@@ -197,7 +232,9 @@ public class SystemPage extends JFrame implements SystemPageObserver {
 
             customerInfo.setText(id + ": " + fullName);
         }
+        
         //Repaint to show updated customer
+        validate();
         repaint();
     }
 

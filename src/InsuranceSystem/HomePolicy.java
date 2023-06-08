@@ -167,16 +167,16 @@ public class HomePolicy extends Policy {
         //Add values into array
         array[0] = this.address;
         array[1] = String.valueOf(this.yearBuilt);
-        array[2] = String.valueOf(this.squareMeters);
-        array[3] = String.valueOf(this.noBuildings);
-        array[4] = String.valueOf(this.squareMeters);
+        array[2] = String.valueOf(this.levels);
+        array[3] = String.valueOf(this.squareMeters);
+        array[4] = String.valueOf(this.noBuildings);
         array[5] = this.wallMaterial.toString().replace("_", " ");
         array[6] = this.roofMaterial.toString().replace("_", " ");
         array[7] = this.constructionQuality.toString();
 
         return array;
     }
-
+             
     /**
      * Enum representing wall materials
      */

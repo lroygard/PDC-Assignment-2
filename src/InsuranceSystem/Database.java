@@ -23,7 +23,7 @@ public class Database {
     }
 
     private void initialise() {
-        //dropAllTables();
+        dropAllTables();
 
         createStaffTable();
         createCustomerTable();
@@ -53,8 +53,6 @@ public class Database {
                 if (tableExists) {
                     statement.executeUpdate("DROP TABLE " + tables[i]);
                 }
-
-                statement.close();
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -762,12 +760,14 @@ public class Database {
             String insertConditions = "INSERT INTO MEDICALHISTORY VALUES ";
             ArrayList<LifePolicy.MedicalCondition> medicalConditions = lifePolicy.getMedicalHistory();
 
-            for (int i = 0; i < medicalConditions.size(); i++) {
-                LifePolicy.MedicalCondition condition = medicalConditions.get(i);
-                insertConditions += "(" + lifePolicy.getPolicyId() + ", '" + condition.toString() + "')";
+            if(!medicalConditions.isEmpty()) {
+                for (int i = 0; i < medicalConditions.size(); i++) {
+                    LifePolicy.MedicalCondition condition = medicalConditions.get(i);
+                    insertConditions += "(" + lifePolicy.getPolicyId() + ", '" + condition.toString() + "')";
 
-                if (i < medicalConditions.size() - 1) {
-                    insertConditions += ", ";
+                    if (i < medicalConditions.size() - 1) {
+                        insertConditions += ", ";
+                    }
                 }
             }
 

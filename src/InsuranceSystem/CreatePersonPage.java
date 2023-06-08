@@ -21,7 +21,7 @@ public abstract class CreatePersonPage {
 
     public CreatePersonPage() {
         //Intialise bounds
-        x = 150;
+        x = 250;
         y = 150;
         width = 150;
         height = 25;

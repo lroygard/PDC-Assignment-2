@@ -45,9 +45,9 @@ public abstract class ViewPersonPage {
         String[] labelNames = {"ID:", "Name:", "Age:"};
 
         for (int i = 0; i < labelNames.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(labelNames[i], fontBold, x, y, width * 2, height);
             viewPersonP.add(label);
+            y += 50;
         }
     }
 
@@ -61,9 +61,9 @@ public abstract class ViewPersonPage {
         y = 200;
 
         for (int i = 0; i < information.length; i++) {
-            y += 50;
             JLabel label = SystemPage.createLabel(information[i], font, x, y, width * 2, height);
             viewPersonP.add(label);
+            y += 50;
         }
     }
 

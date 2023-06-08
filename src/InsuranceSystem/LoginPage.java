@@ -17,9 +17,9 @@ public class LoginPage extends JFrame {
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel wrongPassword;
-    private JTextField usernameTextField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
+    public JTextField usernameTextField;
+    public JPasswordField passwordField;
+    public JButton loginButton;
 
     public LoginPage(SystemPageObserver observer) {
         this.observer = observer;
